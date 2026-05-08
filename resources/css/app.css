@@ -1,3 +1,46 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer utilities {
+  .bg-auth-hero {
+    background-image: radial-gradient(circle at top, rgba(255,255,255,0.08), transparent 24%), radial-gradient(circle at 85% 20%, rgba(248,145,33,0.14), transparent 26%), linear-gradient(180deg, #020814 0%, #06111c 100%);
+  }
+
+  .auth-panel {
+    background: rgba(15, 23, 42, 0.86);
+    border: 1px solid rgba(148, 163, 184, 0.12);
+    box-shadow: 0 40px 90px -45px rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(20px);
+  }
+
+  .auth-input {
+    @apply w-full border border-slate-700 bg-slate-950/90 px-4 py-3 text-sm text-slate-100 placeholder:text-slate-500 focus:border-amber-300 focus:outline-none focus:ring-2 focus:ring-amber-300/20;
+  }
+
+  .auth-label {
+    @apply block text-sm font-semibold text-slate-300 mb-2;
+  }
+
+  .auth-button {
+    @apply inline-flex w-full justify-center px-4 py-3 text-sm font-semibold uppercase tracking-[0.22em] text-slate-950 shadow-lg shadow-amber-500/20 transition hover:bg-amber-300 focus:outline-none focus:ring-2 focus:ring-amber-300 focus:ring-offset-2;
+    background-color: #ecc879;
+  }
+
+  .auth-link {
+    @apply text-sm transition hover:underline;
+  }
+
+  .auth-secondary-link {
+    @apply text-slate-400 hover:text-slate-100;
+  }
+
+  .auth-highlight-link {
+    @apply  hover:text-amber-200;
+    color: #ecc879;
+  }
+
+  .auth-reset-link {
+    color: #7a36d1;
+  }
+}
