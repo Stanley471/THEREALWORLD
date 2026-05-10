@@ -73,10 +73,10 @@
             <div class="absolute inset-0 bg-gradient-to-b from-[#FFCF23]/5 via-transparent to-transparent"></div>
             <div class="max-w-4xl mx-auto relative z-10 flex flex-col items-center">
                 <!-- THE REAL WORLD subtitle -->
-                <p class="order-1 text-xs sm:text-sm uppercase tracking-[0.35em] text-slate-400 mb-6">The Real World</p>
+                <p class="hidden lg:block order-1 text-xs sm:text-sm uppercase tracking-[0.35em] text-slate-400 mb-6">The Real World</p>
 
                 <!-- Pill badge -->
-                <div class="order-2 inline-flex items-center justify-center px-5 py-2 rounded-full border border-white/20 bg-white/5 backdrop-blur-sm mb-8">
+                <div class="hidden lg:inline-flex order-2 items-center justify-center px-5 py-2 rounded-full border border-white/20 bg-white/5 backdrop-blur-sm mb-8">
                     <span class="text-sm sm:text-base font-medium text-white tracking-wide">The Fastest Path To Success</span>
                 </div>
 
@@ -117,42 +117,74 @@
                         </svg>
                     </a>
                 </div>
+
+                <div class="order-7 flex flex-row items-center gap-2 justify-center px-4 mt-4">
+                    <img
+                        alt="Enrolled People"
+                        loading="lazy"
+                        width="89"
+                        height="35"
+                        decoding="async"
+                        src="{{ asset('images/student_profiles.png') }}"
+                        class="h-[35px] w-auto"
+                    />
+                    <p class="text-[13px] sm:text-sm text-slate-300">
+                        <span class="text-white font-bold">155,000+</span>
+                        like-minded students
+                    </p>
+                </div>
             </div>
         </section>
 
 
         <!-- Learning Features -->
-        <section class="py-16 px-4 sm:px-6 lg:px-8">
-            <div class="max-w-6xl mx-auto">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div class="text-center group">
-                        <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-r from-[#FFCF23]/20 to-[#FF8D3A]/20 flex items-center justify-center group-hover:scale-110 transition">
-                            <svg class="w-10 h-10 text-[#FFCF23]" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                            </svg>
+        <section class="relative py-16 px-4 sm:px-6 lg:px-8">
+            <div class="max-w-6xl mx-auto relative">
+                <div class="grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)_auto_minmax(0,1fr)] items-center text-center lg:text-left">
+                    <div class="flex justify-center lg:justify-end">
+                        <div class="flex items-center gap-4">
+                            <div class="flex h-14 w-14 items-center justify-center rounded-full bg-white/5">
+                                <svg class="w-7 h-7 text-[#FFCF23]" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                </svg>
+                            </div>
+                            <div class="space-y-1">
+                                <p class="text-[10px] uppercase tracking-[0.35em] text-slate-400">World Class</p>
+                                <p class="text-xl lg:text-3xl font-bold text-white">Learning</p>
+                            </div>
                         </div>
-                        <h3 class="text-xl font-bold mb-3">World Class Learning</h3>
-                        <p class="text-slate-300">Expert-led courses designed to take you from beginner to expert in record time.</p>
                     </div>
 
-                    <div class="text-center group">
-                        <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-r from-[#FF8D3A]/20 to-[#FFCF23]/20 flex items-center justify-center group-hover:scale-110 transition">
-                            <svg class="w-10 h-10 text-[#FF8D3A]" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M13 7h-2v4H7v2h4v4h2v-4h4v-2h-4V7zm-1-5C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/>
-                            </svg>
+                    <div class="hidden lg:flex justify-center text-[#FFCF23] text-3xl font-bold">→</div>
+
+                    <div class="flex justify-center lg:justify-start">
+                        <div class="flex items-center gap-4">
+                            <div class="flex h-14 w-14 items-center justify-center rounded-full bg-white/5">
+                                <svg class="w-7 h-7 text-[#FFCF23]" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M5 7h14v2H5V7zm0 4h14v2H5v-2zm0 4h14v2H5v-2z" />
+                                </svg>
+                            </div>
+                            <div class="space-y-1">
+                                <p class="text-[10px] uppercase tracking-[0.35em] text-slate-400">Scale From Zero</p>
+                                <p class="text-xl lg:text-3xl font-bold text-white">To 10k/Mo</p>
+                            </div>
                         </div>
-                        <h3 class="text-xl font-bold mb-3">Scale from Zero to 10k/mo</h3>
-                        <p class="text-slate-300">Proven systems and strategies to build and scale your income-generating businesses.</p>
                     </div>
 
-                    <div class="text-center group">
-                        <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-r from-[#FFCF23]/20 to-[#FF8D3A]/20 flex items-center justify-center group-hover:scale-110 transition">
-                            <svg class="w-10 h-10 text-[#FFCF23]" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M16 4c0-1.11.89-2 2-2s2 .89 2 2-.89 2-2 2-2-.89-2-2zm4 18v-6h2.5l-2.54-7.63A2.01 2.01 0 0017.94 6H16v2h1.89l.76 2.27L12 15.21l-6.65-4.94L6.11 8H8V6H5.05c-.83 0-1.55.52-1.85 1.29L.5 16H3v6c0 1.11.89 2 2 2h4c1.11 0 2-.89 2-2v-2h4v2c0 1.11.89 2 2 2h4c1.11 0 2-.89 2-2z"/>
-                            </svg>
+                    <div class="hidden lg:flex justify-center text-white text-3xl font-bold">→</div>
+
+                    <div class="flex justify-center lg:justify-start">
+                        <div class="flex items-center gap-4">
+                            <div class="flex h-14 w-14 items-center justify-center rounded-full bg-white/5">
+                                <svg class="w-7 h-7 text-[#FFCF23]" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M16 4c0-1.11.89-2 2-2s2 .89 2 2-.89 2-2 2-2-.89-2-2zm4 18v-6h2.5l-2.54-7.63A2.01 2.01 0 0017.94 6H16v2h1.89l.76 2.27L12 15.21l-6.65-4.94L6.11 8H8V6H5.05c-.83 0-1.55.52-1.85 1.29L.5 16H3v6c0 1.11.89 2 2 2h4c1.11 0 2-.89 2-2v-2h4v2c0 1.11.89 2 2 2h4c1.11 0 2-.89 2-2z"/>
+                                </svg>
+                            </div>
+                            <div class="space-y-1">
+                                <p class="text-[10px] uppercase tracking-[0.35em] text-slate-400">1-on-1 Advice</p>
+                                <p class="text-xl lg:text-3xl font-bold text-white">From Experts</p>
+                            </div>
                         </div>
-                        <h3 class="text-xl font-bold mb-3">1-on-1 Advice From Experts</h3>
-                        <p class="text-slate-300">Direct mentorship from millionaire entrepreneurs who've built and scaled successful businesses.</p>
                     </div>
                 </div>
             </div>
