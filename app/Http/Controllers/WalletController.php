@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -9,7 +10,9 @@ class WalletController extends Controller
 {
     public function index()
     {
-        $wallet = Auth::user()->wallet;
+        /** @var User $user */
+        $user = Auth::user();
+        $wallet = $user->wallet ?? $user->wallet()->create();
         $transactions = $wallet->getRecentTransactions(20);
 
         return view('wallet.index', compact('wallet', 'transactions'));
@@ -17,7 +20,10 @@ class WalletController extends Controller
 
     public function deposit()
     {
-        return view('wallet.deposit');
+        /** @var User $user */
+        $user = Auth::user();
+        $wallet = $user->wallet ?? $user->wallet()->create();
+        return view('wallet.deposit', compact('wallet'));
     }
 
     public function storeDeposit(Request $request)
@@ -28,7 +34,9 @@ class WalletController extends Controller
         ]);
 
         try {
-            $wallet = Auth::user()->wallet;
+            /** @var User $user */
+            $user = Auth::user();
+            $wallet = $user->wallet ?? $user->wallet()->create();
             $wallet->deposit(
                 $validated['amount'],
                 $validated['description'] ?? 'Deposit',
@@ -43,7 +51,9 @@ class WalletController extends Controller
 
     public function withdraw()
     {
-        $wallet = Auth::user()->wallet;
+        /** @var User $user */
+        $user = Auth::user();
+        $wallet = $user->wallet ?? $user->wallet()->create();
         return view('wallet.withdraw', compact('wallet'));
     }
 
@@ -55,7 +65,9 @@ class WalletController extends Controller
         ]);
 
         try {
-            $wallet = Auth::user()->wallet;
+            /** @var User $user */
+            $user = Auth::user();
+            $wallet = $user->wallet ?? $user->wallet()->create();
             $wallet->withdraw(
                 $validated['amount'],
                 $validated['description'] ?? 'Withdrawal',
@@ -70,7 +82,9 @@ class WalletController extends Controller
 
     public function transactions()
     {
-        $wallet = Auth::user()->wallet;
+        /** @var User $user */
+        $user = Auth::user();
+        $wallet = $user->wallet ?? $user->wallet()->create();
         $transactions = $wallet->transactions()->latest()->paginate(20);
 
         return view('wallet.transactions', compact('transactions'));

@@ -144,9 +144,9 @@
     <h1>Welcome back, <span class="gold">{{ Auth::user()->name }}</span> 👋</h1>
     <p>Here's what's happening in your portfolio today.</p>
   </div>
-  <a class="banner-badge" href="#">
-    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
-    Start Trading
+  <a class="banner-badge" href="{{ route('wallet.deposit') }}">
+    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+    Make a Deposit
   </a>
 </div>
 
@@ -158,7 +158,7 @@
       <svg class="gold" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17.93V18h-2v1.93A8.001 8.001 0 014.07 13H6v-2H4.07A8.001 8.001 0 0111 4.07V6h2V4.07A8.001 8.001 0 0119.93 11H18v2h1.93A8.001 8.001 0 0113 19.93z"/></svg>
     </div>
     <div class="sc-label">Total Balance</div>
-    <div class="sc-value gold">$24,831.50</div>
+    <div class="sc-value gold">${{ number_format($balance, 2) }}</div>
     <div class="sc-change sc-up">
       <svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24"><path d="M7 14l5-5 5 5H7z"/></svg>
       +3.24% today
