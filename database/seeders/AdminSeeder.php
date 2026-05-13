@@ -24,5 +24,6 @@ class AdminSeeder extends Seeder
     ]);
 
     $admin->assignRole('admin');
+    $admin->wallet()->create();
     }
 }
