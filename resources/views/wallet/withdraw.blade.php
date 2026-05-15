@@ -42,6 +42,12 @@
                 <div class="note">Withdrawals will reduce your available wallet balance immediately.</div>
             </div>
 
+            <div style="background: rgba(14, 165, 233, 0.08); border: 1px solid rgba(14, 165, 233, 0.2); border-radius: 0.85rem; padding: 1rem 1.25rem; margin-bottom: 1.5rem; font-size: 0.9rem; color: rgba(226, 232, 240, 0.9);">
+                <p style="margin: 0 0 0.5rem; font-weight: 600;">📍 Withdrawal Address</p>
+                <p style="margin: 0; font-family: monospace; word-break: break-all; color: rgba(226, 232, 240, 0.7);">{{ Auth::user()->withdrawal_address ? Str::limit(Auth::user()->withdrawal_address, 60, '...') : 'Not set' }}</p>
+                <p style="margin: 0.75rem 0 0; font-size: 0.85rem; color: rgba(226, 232, 240, 0.6);">Funds will be sent to this address. <a href="{{ route('settings.index') }}" style="color: rgba(14, 165, 233, 0.9); text-decoration: underline;">Update in Settings</a></p>
+            </div>
+
             <form method="POST" action="{{ route('wallet.store.withdraw') }}">
                 @csrf
                 <div class="form-group">

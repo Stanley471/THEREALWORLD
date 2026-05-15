@@ -53,20 +53,30 @@ class WalletController extends Controller
     {
         /** @var User $user */
         $user = Auth::user();
+
+        if (!$user->withdrawal_address) {
+            return redirect()->route('settings.index')->with('error', 'Please set a withdrawal address in settings before making a withdrawal.');
+        }
+
         $wallet = $user->wallet ?? $user->wallet()->create();
         return view('wallet.withdraw', compact('wallet'));
     }
 
     public function storeWithdraw(Request $request)
     {
+        /** @var User $user */
+        $user = Auth::user();
+
+        if (!$user->withdrawal_address) {
+            return redirect()->route('settings.index')->with('error', 'Please set a withdrawal address in settings before making a withdrawal.');
+        }
+
         $validated = $request->validate([
             'amount' => ['required', 'numeric', 'min:0.01'],
             'description' => ['nullable', 'string', 'max:255'],
         ]);
 
         try {
-            /** @var User $user */
-            $user = Auth::user();
             $wallet = $user->wallet ?? $user->wallet()->create();
             $wallet->withdraw(
                 $validated['amount'],
