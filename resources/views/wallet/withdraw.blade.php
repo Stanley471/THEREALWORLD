@@ -21,7 +21,12 @@
         .nav-link:hover { transform: translateY(-2px); background: rgba(255,255,255,0.14); }
     </style>
 
-    <div class="container">
+    <div class="container">        @if(session('error'))
+            <div style=\"background: rgba(248, 113, 113, 0.1); border: 1px solid rgba(248, 113, 113, 0.3); padding: 12px 16px; border-radius: 10px; margin-bottom: 20px; color: #f87171; font-size: 14px; display: flex; align-items: center; gap: 10px;\">
+                <svg width=\"18\" height=\"18\" fill=\"currentColor\" viewBox=\"0 0 20 20\"><path fill-rule=\"evenodd\" d=\"M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z\"/></svg>
+                {{ session('error') }}
+            </div>
+        @endif
         <div class="page-header">
             <h1>Withdraw Funds</h1>
             <p>Withdraw from your wallet balance. Amounts are deducted from your available wallet balance.</p>
@@ -42,13 +47,18 @@
                 <div class="note">Withdrawals will reduce your available wallet balance immediately.</div>
             </div>
 
-            <div style="background: rgba(14, 165, 233, 0.08); border: 1px solid rgba(14, 165, 233, 0.2); border-radius: 0.85rem; padding: 1rem 1.25rem; margin-bottom: 1.5rem; font-size: 0.9rem; color: rgba(226, 232, 240, 0.9);">
-                <p style="margin: 0 0 0.5rem; font-weight: 600;">📍 Withdrawal Address</p>
-                <p style="margin: 0; font-family: monospace; word-break: break-all; color: rgba(226, 232, 240, 0.7);">{{ Auth::user()->withdrawal_address ? Str::limit(Auth::user()->withdrawal_address, 60, '...') : 'Not set' }}</p>
-                <p style="margin: 0.75rem 0 0; font-size: 0.85rem; color: rgba(226, 232, 240, 0.6);">Funds will be sent to this address. <a href="{{ route('settings.index') }}" style="color: rgba(14, 165, 233, 0.9); text-decoration: underline;">Update in Settings</a></p>
+            <div style="background: rgba(248, 113, 113, 0.08); border: 2px solid rgba(248, 113, 113, 0.3); border-radius: 0.85rem; padding: 1.5rem; margin-bottom: 1.5rem;">
+                <div style="display: flex; align-items: flex-start; gap: 1rem;">
+                    <div style="font-size: 1.5rem; flex-shrink: 0;">⚠️</div>
+                    <div>
+                        <p style="margin: 0 0 0.5rem; font-weight: 600; color: #f87171; font-size: 1rem;">Withdrawal Address Required</p>
+                        <p style="margin: 0 0 1rem; color: rgba(226, 232, 240, 0.8); font-size: 0.95rem;">You haven't set a withdrawal address yet. Please add your wallet address in Settings before you can make a withdrawal.</p>
+                        <a href="{{ route('settings.index') }}" style="display: inline-block; padding: 0.75rem 1.25rem; background: #f87171; color: white; border-radius: 0.6rem; text-decoration: none; font-weight: 600; transition: opacity 0.2s;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">Set Withdrawal Address →</a>
+                    </div>
+                </div>
             </div>
 
-            <form method="POST" action="{{ route('wallet.store.withdraw') }}">
+            <form method="POST" action="{{ route('wallet.store.withdraw') }}" @if(!Auth::user()->withdrawal_address) style="opacity: 0.5; pointer-events: none;" @endif>
                 @csrf
                 <div class="form-group">
                     <label for="amount">Withdrawal Amount</label>

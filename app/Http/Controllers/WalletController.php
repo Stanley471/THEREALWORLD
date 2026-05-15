@@ -53,11 +53,6 @@ class WalletController extends Controller
     {
         /** @var User $user */
         $user = Auth::user();
-
-        if (!$user->withdrawal_address) {
-            return redirect()->route('settings.index')->with('error', 'Please set a withdrawal address in settings before making a withdrawal.');
-        }
-
         $wallet = $user->wallet ?? $user->wallet()->create();
         return view('wallet.withdraw', compact('wallet'));
     }
@@ -68,7 +63,7 @@ class WalletController extends Controller
         $user = Auth::user();
 
         if (!$user->withdrawal_address) {
-            return redirect()->route('settings.index')->with('error', 'Please set a withdrawal address in settings before making a withdrawal.');
+            return redirect()->route('wallet.withdraw')->with('error', 'Please set a withdrawal address in settings before making a withdrawal.');
         }
 
         $validated = $request->validate([
