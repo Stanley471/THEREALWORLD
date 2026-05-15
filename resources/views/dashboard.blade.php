@@ -155,28 +155,27 @@
       <span style="font-size:12px;color:#64748b;">Today</span>
     </div>
     <div class="card-body" style="padding-top:6px;padding-bottom:6px;">
+      @forelse($recentActivities as $activity)
       @php
-        $activities = [
-          ['icon'=>'💰','title'=>'Deposit Confirmed','sub'=>'Bank transfer received','amount'=>'+$2,500.00','up'=>true,'bg'=>'rgba(52,211,153,.10)','time'=>'2 min ago'],
-          ['icon'=>'📈','title'=>'BTC Position Opened','sub'=>'Long · 0.025 BTC','amount'=>'$2,585.30','up'=>true,'bg'=>'rgba(236,200,121,.10)','time'=>'18 min ago'],
-          ['icon'=>'✅','title'=>'ETH Trade Closed','sub'=>'Profit taken','amount'=>'+$312.40','up'=>true,'bg'=>'rgba(52,211,153,.10)','time'=>'1h ago'],
-          ['icon'=>'📉','title'=>'SOL Stop-Loss Hit','sub'=>'Short · 5 SOL','amount'=>'-$48.20','up'=>false,'bg'=>'rgba(248,113,113,.10)','time'=>'3h ago'],
-          ['icon'=>'🎓','title'=>'Course Completed','sub'=>'Crypto Trading — Module 4','amount'=>'','up'=>true,'bg'=>'rgba(129,140,248,.12)','time'=>'5h ago'],
-          ['icon'=>'💸','title'=>'Withdrawal Sent','sub'=>'To bank account','amount'=>'-$1,000.00','up'=>false,'bg'=>'rgba(255,141,58,.10)','time'=>'Yesterday'],
-        ];
+        $isDeposit = $activity->type === 'deposit';
+        $icon = $isDeposit ? '💰' : '💸';
+        $title = $isDeposit ? 'Deposit Confirmed' : 'Withdrawal Sent';
+        $sub = $activity->description ?: ucfirst($activity->type);
+        $amount = ($isDeposit ? '+' : '-') . '$' . number_format($activity->amount, 2);
+        $bg = $isDeposit ? 'rgba(52,211,153,.10)' : 'rgba(248,113,113,.10)';
+        $time = optional($activity->created_at)->diffForHumans() ?? 'just now';
       @endphp
-      @foreach($activities as $a)
       <div class="activity-item">
-        <div class="act-icon" style="background:{{ $a['bg'] }};font-size:16px;">{{ $a['icon'] }}</div>
+        <div class="act-icon" style="background:{{ $bg }};font-size:16px;">{{ $icon }}</div>
         <div style="flex:1;min-width:0;">
-          <div class="act-title">{{ $a['title'] }}</div>
-          <div class="act-time">{{ $a['sub'] }} &middot; {{ $a['time'] }}</div>
+          <div class="act-title">{{ $title }}</div>
+          <div class="act-time">{{ $sub }} &middot; {{ $time }}</div>
         </div>
-        @if($a['amount'])
-          <div class="act-amount {{ $a['up'] ? 'sc-up' : 'sc-down' }}">{{ $a['amount'] }}</div>
-        @endif
+        <div class="act-amount {{ $isDeposit ? 'sc-up' : 'sc-down' }}">{{ $amount }}</div>
       </div>
-      @endforeach
+      @empty
+      <div class="empty-state">No recent activity yet. Make a deposit or trade to see activity here.</div>
+      @endforelse
     </div>
   </div>
 

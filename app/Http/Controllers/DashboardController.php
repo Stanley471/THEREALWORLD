@@ -14,7 +14,8 @@ class DashboardController extends Controller
 
         return view('dashboard', [
             'wallet' => $wallet,
-            'balance' => $wallet->balance,
+            'balance' => $wallet?->balance ?? 0,
+            'recentActivities' => $wallet?->getRecentTransactions(6) ?? collect(),
         ]);
     }
 }
