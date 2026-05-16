@@ -31,11 +31,11 @@
     <div class="sc-icon" style="background:rgba(52,211,153,.10);">
       <svg style="color:#34d399;" fill="currentColor" viewBox="0 0 24 24"><path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/></svg>
     </div>
-    <div class="sc-label">Total Profit</div>
-    <div class="sc-value" style="color:#34d399;">+$5,293.20</div>
+    <div class="sc-label">Total Deposited</div>
+    <div class="sc-value" style="color:#34d399;">${{ number_format($totalDeposited, 2) }}</div>
     <div class="sc-change sc-up">
       <svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24"><path d="M7 14l5-5 5 5H7z"/></svg>
-      +18.5% all time
+      {{ $transactionCount }} transactions
     </div>
   </div>
 
@@ -43,20 +43,20 @@
     <div class="sc-icon" style="background:rgba(255,141,58,.12);">
       <svg style="color:var(--orange);" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
     </div>
-    <div class="sc-label">Open Positions</div>
-    <div class="sc-value orange">7</div>
-    <div class="sc-change" style="color:#94a3b8;">3 long &nbsp;·&nbsp; 4 short</div>
+    <div class="sc-label">Total Withdrawn</div>
+    <div class="sc-value orange">${{ number_format($totalWithdrawn, 2) }}</div>
+    <div class="sc-change" style="color:#94a3b8;">Net flow: ${{ number_format($netFlow, 2) }}</div>
   </div>
 
   <div class="stat-card">
     <div class="sc-icon" style="background:rgba(129,140,248,.12);">
       <svg style="color:#818cf8;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
     </div>
-    <div class="sc-label">Win Rate</div>
-    <div class="sc-value" style="color:#818cf8;">68.4%</div>
+    <div class="sc-label">Transactions</div>
+    <div class="sc-value" style="color:#818cf8;">{{ $transactionCount }}</div>
     <div class="sc-change sc-up">
       <svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24"><path d="M7 14l5-5 5 5H7z"/></svg>
-      +2.1% vs last month
+      Last: {{ optional($lastTransaction?->created_at)->diffForHumans() ?? 'No activity' }}
     </div>
   </div>
 
@@ -93,58 +93,42 @@
 {{-- ── Markets + Activity ── --}}
 <div class="two-col">
 
-  {{-- Markets Table --}}
   <div class="card">
     <div class="card-header">
-      <h2>📈 Live Markets</h2>
-      <a href="#" style="font-size:13px;color:var(--gold);text-decoration:none;font-weight:600;">View All →</a>
+      <h2>📈 Wallet Activity</h2>
+      <span style="font-size:13px;color:#64748b;">Latest transactions</span>
     </div>
     <div style="padding:0 10px 10px;">
+      @if($recentActivities->isEmpty())
+        <div class="empty-state">No transactions yet. Start by making a deposit.</div>
+      @else
       <table class="mkt-table">
         <thead>
           <tr>
-            <th>Asset</th>
-            <th>Price</th>
-            <th>24h Change</th>
-            <th>7d Trend</th>
-            <th>Market Cap</th>
+            <th>Date</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Amount</th>
+            <th>Balance</th>
           </tr>
         </thead>
         <tbody>
-          @php
-            $markets = [
-              ['sym'=>'BTC','name'=>'Bitcoin',  'price'=>'$103,412','chg'=>'+2.34%','up'=>true, 'cap'=>'$2.04T','color'=>'#F7931A','bars'=>[30,45,38,60,55,70,80]],
-              ['sym'=>'ETH','name'=>'Ethereum', 'price'=>'$3,841',  'chg'=>'+1.87%','up'=>true, 'cap'=>'$462B', 'color'=>'#627EEA','bars'=>[50,42,55,48,65,60,72]],
-              ['sym'=>'SOL','name'=>'Solana',   'price'=>'$178.20', 'chg'=>'-0.94%','up'=>false,'cap'=>'$84B',  'color'=>'#9945FF','bars'=>[70,60,75,55,50,58,52]],
-              ['sym'=>'BNB','name'=>'BNB',      'price'=>'$612.40', 'chg'=>'+0.52%','up'=>true, 'cap'=>'$91B',  'color'=>'#F3BA2F','bars'=>[40,45,42,50,48,55,58]],
-              ['sym'=>'XRP','name'=>'Ripple',   'price'=>'$0.6240', 'chg'=>'-1.20%','up'=>false,'cap'=>'$35B',  'color'=>'#00AAE4','bars'=>[60,55,65,50,45,52,48]],
-            ];
-          @endphp
-          @foreach($markets as $m)
+          @foreach($recentActivities as $activity)
           <tr>
+            <td>{{ $activity->created_at->format('M d') }}</td>
             <td>
-              <div class="mkt-coin">
-                <div class="coin-dot" style="background:{{ $m['color'] }}22;color:{{ $m['color'] }};font-size:11px;">{{ $m['sym'] }}</div>
-                <div>
-                  <div style="font-weight:600;font-size:14px;">{{ $m['name'] }}</div>
-                  <div style="font-size:11px;color:#64748b;">{{ $m['sym'] }}</div>
-                </div>
-              </div>
+              <span class="pill {{ $activity->type === 'deposit' ? 'pill-up' : 'pill-down' }}">
+                {{ ucfirst($activity->type) }}
+              </span>
             </td>
-            <td style="font-weight:700;">{{ $m['price'] }}</td>
-            <td><span class="pill {{ $m['up'] ? 'pill-up' : 'pill-down' }}">{{ $m['chg'] }}</span></td>
-            <td>
-              <div class="sparkbar">
-                @foreach($m['bars'] as $i=>$h)
-                  <span style="height:{{ $h }}%;{{ $i===count($m['bars'])-1 ? 'opacity:1;background:'.($m['up']?'#34d399':'#f87171').';' : '' }}"></span>
-                @endforeach
-              </div>
-            </td>
-            <td style="color:#94a3b8;font-size:13px;">{{ $m['cap'] }}</td>
+            <td style="color:#94a3b8;font-size:13px;">{{ $activity->description ?? 'No description' }}</td>
+            <td style="font-weight:700;">{{ $activity->type === 'deposit' ? '+' : '-' }}${{ number_format($activity->amount, 2) }}</td>
+            <td style="color:#94a3b8;font-size:13px;">${{ number_format($activity->balance_after, 2) }}</td>
           </tr>
           @endforeach
         </tbody>
       </table>
+      @endif
     </div>
   </div>
 
@@ -181,35 +165,56 @@
 
 </div>
 
-{{-- ── Course Progress ── --}}
+{{-- ── Account Summary ── --}}
 <div class="card">
   <div class="card-header">
-    <h2>🎓 My Courses</h2>
-    <a href="#" style="font-size:13px;color:var(--gold);text-decoration:none;font-weight:600;">Browse All →</a>
+    <h2>🔎 Account Summary</h2>
+    <a href="{{ route('settings.index') }}" style="font-size:13px;color:var(--gold);text-decoration:none;font-weight:600;">Manage Settings →</a>
   </div>
-  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:0 28px;padding:6px 22px 16px;">
-    @php
-      $courses = [
-        ['icon'=>'📈','name'=>'Crypto Trading','pct'=>72],
-        ['icon'=>'💹','name'=>'Crypto Investing','pct'=>45],
-        ['icon'=>'🤖','name'=>'AI Automation','pct'=>28],
-        ['icon'=>'✍️','name'=>'Copywriting','pct'=>90],
-        ['icon'=>'💼','name'=>'Business Mastery','pct'=>15],
-        ['icon'=>'📱','name'=>'Client Acquisition','pct'=>60],
-      ];
-    @endphp
-    @foreach($courses as $c)
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:0 28px;padding:6px 22px 16px;">
     <div class="course-item">
-      <div class="course-thumb" style="background:rgba(236,200,121,.10);">{{ $c['icon'] }}</div>
+      <div class="course-thumb" style="background:rgba(236,200,121,.10);">💰</div>
       <div class="course-info">
-        <div class="course-name">{{ $c['name'] }}</div>
-        <div class="course-prog">
-          <div class="course-prog-bar" style="width:{{ $c['pct'] }}%;"></div>
+        <div class="course-name">Withdrawal Address</div>
+        <div class="course-prog" style="height:auto;">
+          <div class="course-prog-bar" style="width:{{ Auth::user()->withdrawal_address ? '100%' : '20%' }};background: {{ Auth::user()->withdrawal_address ? 'var(--gold)' : '#f87171' }}; height: 8px; border-radius: 999px;"></div>
         </div>
-        <div class="course-pct">{{ $c['pct'] }}% complete</div>
+        <div class="course-pct">{{ Auth::user()->withdrawal_address ? 'Configured' : 'Not set' }}</div>
       </div>
     </div>
-    @endforeach
+
+    <div class="course-item">
+      <div class="course-thumb" style="background:rgba(52,211,153,.10);">📊</div>
+      <div class="course-info">
+        <div class="course-name">Total Transactions</div>
+        <div class="course-prog" style="height:auto;">
+          <div class="course-prog-bar" style="width:100%;background:rgba(52,211,153,.6);height:8px;border-radius:999px;"></div>
+        </div>
+        <div class="course-pct">{{ $transactionCount }}</div>
+      </div>
+    </div>
+
+    <div class="course-item">
+      <div class="course-thumb" style="background:rgba(129,140,248,.10);">📈</div>
+      <div class="course-info">
+        <div class="course-name">Net Balance Flow</div>
+        <div class="course-prog" style="height:auto;">
+          <div class="course-prog-bar" style="width:100%;background:rgba(129,140,248,.6);height:8px;border-radius:999px;"></div>
+        </div>
+        <div class="course-pct">${{ number_format($netFlow, 2) }}</div>
+      </div>
+    </div>
+
+    <div class="course-item">
+      <div class="course-thumb" style="background:rgba(255,141,58,.10);">⏱️</div>
+      <div class="course-info">
+        <div class="course-name">Latest Transaction</div>
+        <div class="course-prog" style="height:auto;">
+          <div class="course-prog-bar" style="width:100%;background:rgba(255,141,58,.6);height:8px;border-radius:999px;"></div>
+        </div>
+        <div class="course-pct">{{ optional($lastTransaction?->created_at)->diffForHumans() ?? 'None yet' }}</div>
+      </div>
+    </div>
   </div>
 </div>
 
