@@ -12,15 +12,19 @@
     <!-- Settings Header -->
     <div class="card">
       <div class="card-header">
-        <h1 style="font-size:28px;margin:0;">⚙️ Settings</h1>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8a4 4 0 100 8 4 4 0 000-8z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06A1.65 1.65 0 0013 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.6 13a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 0011 4.6a1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 11c.92 0 1.7.75 1.7 1.7z"/></svg>
+          <h1 style="font-size:28px;margin:0;">Settings</h1>
+        </div>
         <p style="color:#94a3b8;font-size:14px;margin:4px 0 0;">Manage your account preferences and wallet settings</p>
       </div>
     </div>
 
     <!-- Withdrawal Settings -->
     <div class="card">
-      <div class="card-header">
-        <h2>🏦 Withdrawal Settings</h2>
+      <div class="card-header" style="display:flex;align-items:center;gap:10px;">
+        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9.75L12 4l9 5.75M4.5 10.5v8.25a1.5 1.5 0 001.5 1.5h12a1.5 1.5 0 001.5-1.5V10.5"/></svg>
+        <h2>Withdrawal Settings</h2>
       </div>
       <div class="card-body">
         <form method="POST" action="{{ route('settings.withdrawal.update') }}" style="display:grid;gap:16px;">
@@ -66,8 +70,9 @@
 
     <!-- Other Settings Placeholder -->
     <div class="card">
-      <div class="card-header">
-        <h2>🔐 Security Settings</h2>
+      <div class="card-header" style="display:flex;align-items:center;gap:10px;">
+        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c1.657 0 3-1.567 3-3.5S13.657 4 12 4 9 5.567 9 7.5 10.343 11 12 11zm0 0v5m-3 3h6"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 11V8a8 8 0 0116 0v3"/></svg>
+        <h2>Security Settings</h2>
       </div>
       <div class="card-body" style="display:grid;gap:12px;">
         <div style="padding:12px 14px;background:rgba(94,234,212,.08);border:1px solid rgba(94,234,212,.2);border-radius:8px;font-size:14px;color:#2dd4bf;">
@@ -81,8 +86,9 @@
 
     <!-- Notification Settings Placeholder -->
     <div class="card">
-      <div class="card-header">
-        <h2>🔔 Notification Settings</h2>
+      <div class="card-header" style="display:flex;align-items:center;gap:10px;">
+        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6 6 0 00-5-5.917V4a1 1 0 10-2 0v1.083A6 6 0 006 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0a3 3 0 11-6 0h6z"/></svg>
+        <h2>Notification Settings</h2>
       </div>
       <div class="card-body" style="display:grid;gap:12px;">
         <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;">

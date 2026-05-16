@@ -3,7 +3,7 @@
 {{-- ── Welcome Banner ── --}}
 <div class="welcome-banner">
   <div>
-    <h1>Welcome back, <span class="gold">{{ Auth::user()->name }}</span> 👋</h1>
+    <h1>Welcome back, <span class="gold">{{ Auth::user()->name }}</span></h1>
     <p>Here's what's happening in your portfolio today.</p>
   </div>
   <a class="banner-badge" href="{{ route('wallet.deposit') }}">
@@ -94,8 +94,11 @@
 <div class="two-col">
 
   <div class="card">
-    <div class="card-header">
-      <h2>📈 Wallet Activity</h2>
+    <div class="card-header" style="display:flex;align-items:center;justify-content:space-between;gap:10px;">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 17h18M7 13V5m6 12V9m6 4V7"/></svg>
+        <h2>Wallet Activity</h2>
+      </div>
       <span style="font-size:13px;color:#64748b;">Latest transactions</span>
     </div>
     <div style="padding:0 10px 10px;">
@@ -134,15 +137,17 @@
 
   {{-- Activity Feed --}}
   <div class="card">
-    <div class="card-header">
-      <h2>⚡ Recent Activity</h2>
+    <div class="card-header" style="display:flex;align-items:center;justify-content:space-between;gap:10px;">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 2L3 14h7v8l10-12h-7z"/></svg>
+        <h2>Recent Activity</h2>
+      </div>
       <span style="font-size:12px;color:#64748b;">Today</span>
     </div>
     <div class="card-body" style="padding-top:6px;padding-bottom:6px;">
       @forelse($recentActivities as $activity)
       @php
         $isDeposit = $activity->type === 'deposit';
-        $icon = $isDeposit ? '💰' : '💸';
         $title = $isDeposit ? 'Deposit Confirmed' : 'Withdrawal Sent';
         $sub = $activity->description ?: ucfirst($activity->type);
         $amount = ($isDeposit ? '+' : '-') . '$' . number_format($activity->amount, 2);
@@ -150,7 +155,13 @@
         $time = optional($activity->created_at)->diffForHumans() ?? 'just now';
       @endphp
       <div class="activity-item">
-        <div class="act-icon" style="background:{{ $bg }};font-size:16px;">{{ $icon }}</div>
+        <div class="act-icon" style="background:{{ $bg }};font-size:16px;display:flex;align-items:center;justify-content:center;">
+          @if($isDeposit)
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v8m4-4H8"/></svg>
+          @else
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 16V8m-4 4h8"/></svg>
+          @endif
+        </div>
         <div style="flex:1;min-width:0;">
           <div class="act-title">{{ $title }}</div>
           <div class="act-time">{{ $sub }} &middot; {{ $time }}</div>
@@ -167,13 +178,18 @@
 
 {{-- ── Account Summary ── --}}
 <div class="card">
-  <div class="card-header">
-    <h2>🔎 Account Summary</h2>
+  <div class="card-header" style="display:flex;align-items:center;justify-content:space-between;gap:10px;">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M11 18a7 7 0 100-14 7 7 0 000 14z"/></svg>
+      <h2>Account Summary</h2>
+    </div>
     <a href="{{ route('settings.index') }}" style="font-size:13px;color:var(--gold);text-decoration:none;font-weight:600;">Manage Settings →</a>
   </div>
   <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:0 28px;padding:6px 22px 16px;">
     <div class="course-item">
-      <div class="course-thumb" style="background:rgba(236,200,121,.10);">💰</div>
+      <div class="course-thumb" style="background:rgba(236,200,121,.10);">
+        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.13 0-2.16.39-3 1.04C8.16 9.39 8 10.18 8 11a4 4 0 108 0c0-.82-.16-1.61-.44-2.32C14.16 8.39 13.13 8 12 8z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14v6"/></svg>
+      </div>
       <div class="course-info">
         <div class="course-name">Withdrawal Address</div>
         <div class="course-prog" style="height:auto;">
@@ -184,7 +200,9 @@
     </div>
 
     <div class="course-item">
-      <div class="course-thumb" style="background:rgba(52,211,153,.10);">📊</div>
+      <div class="course-thumb" style="background:rgba(52,211,153,.10);">
+        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 17h18M8 13v4M12 9v8M16 5v12"/></svg>
+      </div>
       <div class="course-info">
         <div class="course-name">Total Transactions</div>
         <div class="course-prog" style="height:auto;">
@@ -195,7 +213,9 @@
     </div>
 
     <div class="course-item">
-      <div class="course-thumb" style="background:rgba(129,140,248,.10);">📈</div>
+      <div class="course-thumb" style="background:rgba(129,140,248,.10);">
+        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l6 6 4-4 6 6"/></svg>
+      </div>
       <div class="course-info">
         <div class="course-name">Net Balance Flow</div>
         <div class="course-prog" style="height:auto;">
@@ -206,7 +226,9 @@
     </div>
 
     <div class="course-item">
-      <div class="course-thumb" style="background:rgba(255,141,58,.10);">⏱️</div>
+      <div class="course-thumb" style="background:rgba(255,141,58,.10);">
+        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      </div>
       <div class="course-info">
         <div class="course-name">Latest Transaction</div>
         <div class="course-prog" style="height:auto;">

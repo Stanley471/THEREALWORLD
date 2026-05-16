@@ -49,7 +49,9 @@
 
             <div style="background: rgba(248, 113, 113, 0.08); border: 2px solid rgba(248, 113, 113, 0.3); border-radius: 0.85rem; padding: 1.5rem; margin-bottom: 1.5rem;">
                 <div style="display: flex; align-items: flex-start; gap: 1rem;">
-                    <div style="font-size: 1.5rem; flex-shrink: 0;">⚠️</div>
+                    <div style="font-size: 1.5rem; flex-shrink: 0; display:flex;align-items:center;justify-content:center;">
+                      <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v4m0 4h.01"/></svg>
+                    </div>
                     <div>
                         <p style="margin: 0 0 0.5rem; font-weight: 600; color: #f87171; font-size: 1rem;">Withdrawal Address Required</p>
                         <p style="margin: 0 0 1rem; color: rgba(226, 232, 240, 0.8); font-size: 0.95rem;">You haven't set a withdrawal address yet. Please add your wallet address in Settings before you can make a withdrawal.</p>

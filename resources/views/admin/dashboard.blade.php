@@ -243,8 +243,11 @@
 
         {{-- Admin Alerts --}}
         <div class="adm-card">
-            <div class="adm-card-header">
-                <h2>🔔 System Alerts</h2>
+            <div class="adm-card-header" style="display:flex;align-items:center;justify-content:space-between;gap:10px;">
+                <div style="display:flex;align-items:center;gap:10px;">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6 6 0 00-5-5.917V4a1 1 0 10-2 0v1.083A6 6 0 006 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0a3 3 0 11-6 0h6z"/></svg>
+                    <h2>System Alerts</h2>
+                </div>
                 <span style="font-size:11px;color:#475569;">Live</span>
             </div>
             <div class="adm-card-body" style="padding-top:6px;padding-bottom:6px;">
@@ -276,14 +279,14 @@
 <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
     @php
         $platformStats = [
-            ['label'=>'Total Courses','value'=>'10','icon'=>'🎓','change'=>'Active'],
-            ['label'=>'Avg Session','value'=>'24m','icon'=>'⏱️','change'=>'Per user'],
-            ['label'=>'Support Tickets','value'=>'12','icon'=>'🎫','change'=>'Open'],
+            ['label'=>'Total Courses','value'=>'10','icon'=>'<svg width="28" height="28" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6l-8 4 8 4 8-4-8-4z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 14l8 4 8-4"/></svg>','change'=>'Active'],
+            ['label'=>'Avg Session','value'=>'24m','icon'=>'<svg width="28" height="28" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6l4 2"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>','change'=>'Per user'],
+            ['label'=>'Support Tickets','value'=>'12','icon'=>'<svg width="28" height="28" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8h18M7 8V6a4 4 0 018 0v2"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8v10a2 2 0 002 2h6a2 2 0 002-2V8"/></svg>','change'=>'Open'],
         ];
     @endphp
     @foreach($platformStats as $s)
     <div class="adm-card" style="padding:18px 20px;display:flex;align-items:center;gap:14px;">
-        <div style="font-size:28px;">{{ $s['icon'] }}</div>
+        <div style="font-size:28px;">{!! $s['icon'] !!}</div>
         <div>
             <div style="font-size:11px;color:#475569;text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px;">{{ $s['label'] }}</div>
             <div style="font-size:22px;font-weight:800;color:#e2e8f0;">{{ $s['value'] }}</div>
