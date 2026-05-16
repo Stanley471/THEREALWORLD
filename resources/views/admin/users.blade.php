@@ -98,7 +98,7 @@ table.full tr:hover td{background:rgba(239,68,68,.03);}
                 </td>
                 <td>
                     <div style="display:flex;gap:6px;">
-                        <button style="padding:5px 10px;border-radius:7px;background:rgba(236,200,121,.1);border:1px solid rgba(236,200,121,.2);color:#ecc879;font-size:11px;font-weight:600;cursor:pointer;" title="Edit">Edit</button>
+                        <a href="{{ route('admin.users.edit', $u->id) }}" style="padding:5px 10px;border-radius:7px;background:rgba(236,200,121,.1);border:1px solid rgba(236,200,121,.2);color:#ecc879;font-size:11px;font-weight:600;cursor:pointer;text-decoration:none;display:inline-block;" title="Edit">Edit</a>
                         @if($u->id !== auth()->id())
                         <button style="padding:5px 10px;border-radius:7px;background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.2);color:#f87171;font-size:11px;font-weight:600;cursor:pointer;" title="Delete">Delete</button>
                         @endif

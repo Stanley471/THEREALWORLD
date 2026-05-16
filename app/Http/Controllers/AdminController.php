@@ -36,4 +36,33 @@ class AdminController extends Controller
         $users = User::latest()->paginate(15);
         return view('admin.users', compact('users'));
     }
+
+    public function editUser(User $user)
+    {
+        $wallet = $user->wallet;
+        return view('admin.users.edit', compact('user', 'wallet'));
+    }
+
+    public function updateUser(Request $request, User $user)
+    {
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email', 'max:255', 'unique:users,email,' . $user->id],
+            'withdrawal_address' => ['nullable', 'string', 'max:255'],
+            'wallet_balance' => ['nullable', 'numeric', 'min:0'],
+        ]);
+
+        $user->update([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'withdrawal_address' => $validated['withdrawal_address'],
+        ]);
+
+        // Update wallet balance if provided
+        if (!empty($validated['wallet_balance']) && $user->wallet) {
+            $user->wallet->update(['balance' => $validated['wallet_balance']]);
+        }
+
+        return redirect()->route('admin.users')->with('success', 'User updated successfully.');
+    }
 }
