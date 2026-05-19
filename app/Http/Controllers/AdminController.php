@@ -75,7 +75,19 @@ class AdminController extends Controller
 
         // Update wallet balance if provided
         if (!empty($validated['wallet_balance']) && $user->wallet) {
-            $user->wallet->update(['balance' => $validated['wallet_balance']]);
+            $oldBalance = $user->wallet->balance;
+            $newBalance = $validated['wallet_balance'];
+            $user->wallet->update(['balance' => $newBalance]);
+
+            // Log adjustment transaction
+            $adjustmentAmount = abs($newBalance - $oldBalance);
+            $user->wallet->transactions()->create([
+                'type' => 'adjustment',
+                'amount' => $adjustmentAmount,
+                'balance_after' => $newBalance,
+                'description' => 'Admin balance adjustment',
+                'reference' => 'admin_adjustment',
+            ]);
         }
 
         return redirect()->route('admin.users')->with('success', 'User updated successfully.');

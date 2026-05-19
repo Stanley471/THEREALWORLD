@@ -156,7 +156,6 @@
 
             <div class="policy-header">
                 <h1>Privacy Policy</h1>
-                <p>Last updated: May 19, 2026</p>
             </div>
 
             <div class="policy-content">

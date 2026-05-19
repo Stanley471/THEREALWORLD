@@ -66,11 +66,15 @@
                     </thead>
                     <tbody>
                         @foreach($transactions as $transaction)
+                            @php
+                                $amountSign = $transaction->type === 'withdrawal' || $transaction->amount < 0 ? '-' : '+';
+                                $amountClass = $transaction->type === 'withdrawal' ? 'amount-down' : 'amount-up';
+                            @endphp
                             <tr>
                                 <td>{{ $transaction->created_at->format('M j, Y') }}</td>
                                 <td class="transaction-type">{{ $transaction->type }}</td>
-                                <td class="{{ $transaction->type === 'deposit' ? 'amount-up' : 'amount-down' }}">
-                                    {{ $transaction->type === 'deposit' ? '+' : '-' }}${{ number_format($transaction->amount, 2) }}
+                                <td class="{{ $amountClass }}">
+                                    {{ $amountSign }}${{ number_format(abs($transaction->amount), 2) }}
                                 </td>
                                 <td>${{ number_format($transaction->balance_after, 2) }}</td>
                                 <td>{{ $transaction->description ?? 'Crypto deposit' }}</td>

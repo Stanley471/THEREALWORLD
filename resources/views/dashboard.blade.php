@@ -170,15 +170,19 @@
         </thead>
         <tbody>
           @foreach($recentActivities as $activity)
+          @php
+            $activitySign = $activity->type === 'withdrawal' || $activity->amount < 0 ? '-' : '+';
+            $activityPill = ($activity->type === 'withdrawal' || $activity->amount < 0) ? 'pill-down' : 'pill-up';
+          @endphp
           <tr>
             <td>{{ $activity->created_at->format('M d') }}</td>
             <td>
-              <span class="pill {{ $activity->type === 'deposit' ? 'pill-up' : 'pill-down' }}">
+              <span class="pill {{ $activityPill }}">
                 {{ ucfirst($activity->type) }}
               </span>
             </td>
             <td style="color:#94a3b8;font-size:13px;">{{ $activity->description ?? 'No description' }}</td>
-            <td style="font-weight:700;">{{ $activity->type === 'deposit' ? '+' : '-' }}${{ number_format($activity->amount, 2) }}</td>
+            <td style="font-weight:700;">{{ $activitySign }}${{ number_format(abs($activity->amount), 2) }}</td>
             <td style="color:#94a3b8;font-size:13px;">${{ number_format($activity->balance_after, 2) }}</td>
           </tr>
           @endforeach
@@ -200,16 +204,22 @@
     <div class="card-body" style="padding-top:6px;padding-bottom:6px;">
       @forelse($recentActivities as $activity)
       @php
-        $isDeposit = $activity->type === 'deposit';
-        $title = $isDeposit ? 'Deposit Confirmed' : 'Withdrawal Sent';
+        $positive = $activity->amount >= 0;
+        $title = match ($activity->type) {
+            'deposit' => 'Deposit Confirmed',
+            'withdrawal' => 'Withdrawal Sent',
+            'returns' => $positive ? 'Return Credited' : 'Return Loss',
+            'adjustment' => 'Balance Adjustment',
+            default => ucfirst($activity->type),
+        };
         $sub = $activity->description ?: ucfirst($activity->type);
-        $amount = ($isDeposit ? '+' : '-') . '$' . number_format($activity->amount, 2);
-        $bg = $isDeposit ? 'rgba(52,211,153,.10)' : 'rgba(248,113,113,.10)';
+        $amount = ($positive ? '+' : '-') . '$' . number_format(abs($activity->amount), 2);
+        $bg = $positive ? 'rgba(52,211,153,.10)' : 'rgba(248,113,113,.10)';
         $time = optional($activity->created_at)->diffForHumans() ?? 'just now';
       @endphp
       <div class="activity-item">
         <div class="act-icon" style="background:{{ $bg }};font-size:16px;display:flex;align-items:center;justify-content:center;">
-          @if($isDeposit)
+          @if($positive)
             <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v8m4-4H8"/></svg>
           @else
             <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 16V8m-4 4h8"/></svg>
@@ -219,7 +229,7 @@
           <div class="act-title">{{ $title }}</div>
           <div class="act-time">{{ $sub }} &middot; {{ $time }}</div>
         </div>
-        <div class="act-amount {{ $isDeposit ? 'sc-up' : 'sc-down' }}">{{ $amount }}</div>
+        <div class="act-amount {{ $positive ? 'sc-up' : 'sc-down' }}">{{ $amount }}</div>
       </div>
       @empty
       <div class="empty-state">No recent activity yet. Make a deposit or trade to see activity here.</div>

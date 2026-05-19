@@ -16,6 +16,10 @@
         .type-badge { display: inline-flex; align-items: center; justify-content: center; min-width: 100px; padding: 0.5rem 0.75rem; border-radius: 999px; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; }
         .deposit { background: rgba(52, 211, 153, 0.18); color: #34d399; }
         .withdrawal { background: rgba(248, 113, 113, 0.18); color: #f87171; }
+        .returns-positive { background: rgba(52, 211, 153, 0.18); color: #34d399; }
+        .returns-negative { background: rgba(248, 113, 113, 0.18); color: #f87171; }
+        .adjustment-positive { background: rgba(96, 165, 250, 0.18); color: #60a5fa; }
+        .adjustment-negative { background: rgba(248, 113, 113, 0.18); color: #f87171; }
         .empty-state { text-align: center; padding: 2rem 1rem; color: rgba(226,232,240,0.7); }
         .pagination { display: flex; justify-content: center; gap: 0.75rem; margin-top: 1.75rem; }
         .pagination a, .pagination span { padding: 0.75rem 1rem; border-radius: 0.75rem; border: 1px solid rgba(255,255,255,0.08); color: white; text-decoration: none; background: rgba(255,255,255,0.05); }
@@ -47,10 +51,22 @@
                     </thead>
                     <tbody>
                         @foreach($transactions as $transaction)
+                            @php
+                                $isCredit = $transaction->type === 'deposit' || ($transaction->type === 'returns' && $transaction->amount >= 0) || ($transaction->type === 'adjustment' && $transaction->amount >= 0);
+                                $amountSign = $transaction->type === 'withdrawal' || ($transaction->amount < 0) ? '-' : '+';
+                                $amountClass = $transaction->type === 'withdrawal' ? 'withdrawal' : 'deposit';
+                                $typeClass = match ($transaction->type) {
+                                    'deposit' => 'deposit',
+                                    'withdrawal' => 'withdrawal',
+                                    'returns' => $transaction->amount >= 0 ? 'returns-positive' : 'returns-negative',
+                                    'adjustment' => $transaction->amount >= 0 ? 'adjustment-positive' : 'adjustment-negative',
+                                    default => $transaction->type,
+                                };
+                            @endphp
                             <tr>
                                 <td>{{ $transaction->created_at->format('M j, Y h:ia') }}</td>
-                                <td><span class="type-badge {{ $transaction->type }}">{{ $transaction->type }}</span></td>
-                                <td class="{{ $transaction->type === 'deposit' ? 'deposit' : 'withdrawal' }}">{{ $transaction->type === 'deposit' ? '+' : '-' }}${{ number_format($transaction->amount, 2) }}</td>
+                                <td><span class="type-badge {{ $typeClass }}">{{ $transaction->type }}</span></td>
+                                <td class="{{ $amountClass }}">{{ $amountSign }}${{ number_format(abs($transaction->amount), 2) }}</td>
                                 <td>${{ number_format($transaction->balance_after, 2) }}</td>
                                 <td>{{ $transaction->description ?? 'Crypto transaction' }}</td>
                             </tr>

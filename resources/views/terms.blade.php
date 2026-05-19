@@ -156,7 +156,6 @@
 
             <div class="terms-header">
                 <h1>Terms & Conditions</h1>
-                <p>Last updated: January 19, 2024</p>
             </div>
 
             <div class="terms-content">

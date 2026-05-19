@@ -64,7 +64,16 @@ class Wallet extends Model
         }
 
         if ($amount > 0) {
-            return $this->deposit($amount, $description, 'daily_return');
+            $this->balance += $amount;
+            $this->save();
+
+            return $this->transactions()->create([
+                'type' => 'returns',
+                'amount' => $amount,
+                'balance_after' => $this->balance,
+                'description' => $description,
+                'reference' => 'daily_return',
+            ]);
         }
 
         $loss = abs($amount);
@@ -73,8 +82,8 @@ class Wallet extends Model
         $this->save();
 
         return $this->transactions()->create([
-            'type' => 'withdrawal',
-            'amount' => $withdrawAmount,
+            'type' => 'returns',
+            'amount' => -$withdrawAmount,
             'balance_after' => $this->balance,
             'description' => $description,
             'reference' => 'daily_return',

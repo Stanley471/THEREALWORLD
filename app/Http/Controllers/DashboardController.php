@@ -28,7 +28,7 @@ class DashboardController extends Controller
             ->where('created_at', '>=', now()->subDays($trendWindow)->startOfDay())
             ->get()
             ->groupBy(fn ($tx) => $tx->created_at->format('Y-m-d'))
-            ->map(fn ($items) => $items->sum(fn ($tx) => $tx->type === 'deposit' ? $tx->amount : -$tx->amount));
+            ->map(fn ($items) => $items->sum(fn ($tx) => in_array($tx->type, ['deposit', 'returns', 'adjustment']) ? $tx->amount : -$tx->amount));
 
         $trendValues = $trendDates->map(fn ($date) => $dailyNet->get($date, 0))->all();
         $trendLabels = $trendDates->map(fn ($date) => Carbon::parse($date)->format('D'))->all();
