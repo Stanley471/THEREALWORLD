@@ -1,18 +1,71 @@
 <x-dashboard-layout title="Dashboard">
 
-{{-- ── Welcome Banner ── --}}
-<div class="welcome-banner">
-  <div>
-    <h1>Welcome back, <span class="gold">{{ Auth::user()->name }}</span></h1>
-    <p>Here's what's happening in your portfolio today.</p>
+<div class="hero-grid">
+  <div class="hero-card">
+    <div class="hero-head">
+      <div>
+        <p class="hero-label">Overview</p>
+        <h1>Portfolio Value</h1>
+      </div>
+    </div>
+
+    <div class="hero-balance">
+      <div class="hero-amount">${{ number_format($balance, 2) }}</div>
+      <div class="hero-currency">USD</div>
+    </div>
+
+    <div class="hero-subtitle">Weekly net flow and recent activity shown directly in the hero.</div>
+
+    <div class="hero-chart">
+      <div class="chart-meta compact">
+        <div>
+          <span>Deposited</span>
+          <strong>${{ number_format($totalDeposited, 2) }}</strong>
+        </div>
+        <div>
+          <span>Withdrawn</span>
+          <strong>${{ number_format($totalWithdrawn, 2) }}</strong>
+        </div>
+      </div>
+
+      <div class="line-graph-wrap">
+        @php
+          $points = collect($trendValues)->map(function ($value, $index) use ($trendMin, $trendRange) {
+              $x = 80 + ($index * 90);
+              $y = 140 - (($value - $trendMin) / $trendRange) * 100;
+              return ['x' => $x, 'y' => $y, 'value' => $value];
+          });
+          $segments = [];
+          for ($i = 0; $i < $points->count() - 1; $i++) {
+              $current = $points[$i];
+              $next = $points[$i + 1];
+              $segments[] = [
+                  'd' => 'M' . $current['x'] . ',' . $current['y'] . ' L' . $next['x'] . ',' . $next['y'],
+                  'color' => $next['value'] >= $current['value'] ? '#22c55e' : '#f87171',
+              ];
+          }
+        @endphp
+
+        <svg viewBox="0 0 700 170" preserveAspectRatio="none" class="line-graph">
+          @foreach($segments as $segment)
+            <path d="{{ $segment['d'] }}" fill="none" stroke="{{ $segment['color'] }}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+          @endforeach
+        </svg>
+
+        <div class="chart-x compact">
+          @foreach($trendLabels as $label)
+            <span>{{ $label }}</span>
+          @endforeach
+        </div>
+      </div>
+    </div>
+
+  
   </div>
-  <a class="banner-badge" href="{{ route('wallet.deposit') }}">
-    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-    Make a Deposit
-  </a>
+
+  
 </div>
 
-{{-- ── Stat Cards ── --}}
 <div class="stats-grid">
 
   <div class="stat-card">
