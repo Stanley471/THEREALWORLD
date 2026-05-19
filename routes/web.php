@@ -17,6 +17,10 @@ Route::get('/terms', function () {
     return view('terms');
 })->name('terms');
 
+Route::get('/privacy', function () {
+    return view('privacy');
+})->name('privacy');
+
 Route::get('/checkout', [CheckoutController::class, 'show'])->name('checkout');
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
