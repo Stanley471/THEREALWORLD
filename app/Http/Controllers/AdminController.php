@@ -49,13 +49,28 @@ class AdminController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'max:255', 'unique:users,email,' . $user->id],
             'withdrawal_address' => ['nullable', 'string', 'max:255'],
+            'daily_return_min' => ['nullable', 'numeric', 'between:-100,100', 'required_with:daily_return_max'],
+            'daily_return_max' => ['nullable', 'numeric', 'between:-100,100', 'required_with:daily_return_min', 'gte:daily_return_min'],
             'wallet_balance' => ['nullable', 'numeric', 'min:0'],
         ]);
+
+        $dailyReturnMin = isset($validated['daily_return_min']) ? round($validated['daily_return_min'], 2) : null;
+        $dailyReturnMax = isset($validated['daily_return_max']) ? round($validated['daily_return_max'], 2) : null;
+        $dailyReturnValue = $user->daily_return;
+
+        if (!is_null($dailyReturnMin) && !is_null($dailyReturnMax)) {
+            $minCents = (int) round($dailyReturnMin * 100);
+            $maxCents = (int) round($dailyReturnMax * 100);
+            $dailyReturnValue = round(mt_rand($minCents, $maxCents) / 100, 2);
+        }
 
         $user->update([
             'name' => $validated['name'],
             'email' => $validated['email'],
             'withdrawal_address' => $validated['withdrawal_address'],
+            'daily_return_min' => $dailyReturnMin,
+            'daily_return_max' => $dailyReturnMax,
+            'daily_return' => $dailyReturnValue,
         ]);
 
         // Update wallet balance if provided

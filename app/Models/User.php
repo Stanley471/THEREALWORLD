@@ -24,6 +24,9 @@ class User extends Authenticatable
         'email',
         'password',
         'withdrawal_address',
+        'daily_return_min',
+        'daily_return_max',
+        'daily_return',
     ];
 
     /**
@@ -46,6 +49,9 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'daily_return_min' => 'decimal:2',
+            'daily_return_max' => 'decimal:2',
+            'daily_return' => 'decimal:2',
         ];
     }
 

@@ -46,6 +46,31 @@
                             <span style="display:block;color:#f87171;font-size:12px;margin-top:4px;">{{ $message }}</span>
                         @enderror
                     </div>
+
+                    <div style="margin-bottom:16px;">
+                        <label style="display:block;font-size:12px;font-weight:600;color:#a0a0a0;margin-bottom:8px;text-transform:uppercase;letter-spacing:.3px;">Min Daily Return (%)</label>
+                        <input type="number" step="0.01" name="daily_return_min" value="{{ old('daily_return_min', $user->daily_return_min) }}" placeholder="0.10" style="width:100%;padding:10px 12px;border:1px solid rgba(255,255,255,.1);border-radius:8px;background:rgba(255,255,255,.05);color:#fff;font-size:13px;">
+                        <p style="font-size:11px;color:#808080;margin-top:6px;">Minimum percent for the user's random daily return.</p>
+                        @error('daily_return_min')
+                            <span style="display:block;color:#f87171;font-size:12px;margin-top:4px;">{{ $message }}</span>
+                        @enderror
+                    </div>
+
+                    <div style="margin-bottom:16px;">
+                        <label style="display:block;font-size:12px;font-weight:600;color:#a0a0a0;margin-bottom:8px;text-transform:uppercase;letter-spacing:.3px;">Max Daily Return (%)</label>
+                        <input type="number" step="0.01" name="daily_return_max" value="{{ old('daily_return_max', $user->daily_return_max) }}" placeholder="0.50" style="width:100%;padding:10px 12px;border:1px solid rgba(255,255,255,.1);border-radius:8px;background:rgba(255,255,255,.05);color:#fff;font-size:13px;">
+                        <p style="font-size:11px;color:#808080;margin-top:6px;">Maximum percent for the user's random daily return.</p>
+                        @error('daily_return_max')
+                            <span style="display:block;color:#f87171;font-size:12px;margin-top:4px;">{{ $message }}</span>
+                        @enderror
+                    </div>
+
+                    <div style="margin-bottom:16px;">
+                        <label style="display:block;font-size:12px;font-weight:600;color:#a0a0a0;margin-bottom:8px;text-transform:uppercase;letter-spacing:.3px;">Assigned Daily Return</label>
+                        <div style="width:100%;padding:10px 12px;border:1px solid rgba(255,255,255,.1);border-radius:8px;background:rgba(255,255,255,.05);color:#fff;font-size:13px;">
+                            {{ $user->daily_return !== null ? number_format($user->daily_return, 2) . '%' : 'Not assigned yet' }}
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Wallet Info Section -->

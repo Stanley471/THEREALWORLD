@@ -54,4 +54,30 @@ class Wallet extends Model
     {
         return $this->transactions()->latest()->take($limit)->get();
     }
+
+    public function applyDailyReturn(float $percentage, string $description = null)
+    {
+        $amount = round($this->balance * ($percentage / 100), 2);
+
+        if ($amount === 0) {
+            return null;
+        }
+
+        if ($amount > 0) {
+            return $this->deposit($amount, $description, 'daily_return');
+        }
+
+        $loss = abs($amount);
+        $withdrawAmount = min($this->balance, $loss);
+        $this->balance -= $withdrawAmount;
+        $this->save();
+
+        return $this->transactions()->create([
+            'type' => 'withdrawal',
+            'amount' => $withdrawAmount,
+            'balance_after' => $this->balance,
+            'description' => $description,
+            'reference' => 'daily_return',
+        ]);
+    }
 }
