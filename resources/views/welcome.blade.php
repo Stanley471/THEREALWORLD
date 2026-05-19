@@ -1073,7 +1073,7 @@
                         <h4 class="font-bold mb-4">Legal</h4>
                         <ul class="space-y-2 text-sm text-slate-400">
                             <li><a href="#" class="hover:text-[#FFCF23] transition">Privacy</a></li>
-                            <li><a href="#" class="hover:text-[#FFCF23] transition">Terms</a></li>
+                            <li><a href="{{ route('terms') }}" class="hover:text-[#FFCF23] transition">Terms</a></li>
                         </ul>
                     </div>
                 </div>
