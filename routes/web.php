@@ -7,6 +7,7 @@ use App\Http\Controllers\WalletController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Middleware\AdminMiddleware;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -30,10 +31,28 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+    Route::get('/community', function () {
+        return view('community');
+    })->name('community');
+
     Route::prefix('settings')->name('settings.')->group(function () {
         Route::get('/', [SettingsController::class, 'index'])->name('index');
         Route::post('/withdrawal', [SettingsController::class, 'updateWithdrawalAddress'])->name('withdrawal.update');
     });
+
+    Route::get('/portfolio', function () {
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+        $wallet = $user->wallet ?? $user->wallet()->create(['balance' => 0]);
+        $totalDeposited = $wallet->transactions()->where('type', 'deposit')->sum('amount');
+        $totalWithdrawn = $wallet->transactions()->where('type', 'withdrawal')->sum('amount');
+        $totalReturns = $wallet->transactions()->where('type', 'returns')->sum('amount');
+        $recentTransactions = $wallet->transactions()->latest()->take(6)->get();
+
+        return view('portfolio', compact(
+            'wallet', 'totalDeposited', 'totalWithdrawn', 'totalReturns', 'recentTransactions'
+        ));
+    })->name('portfolio');
 
     Route::prefix('wallet')->name('wallet.')->group(function () {
         Route::get('/', [WalletController::class, 'index'])->name('index');
