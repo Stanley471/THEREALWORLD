@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PendingDeposit;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
@@ -91,5 +93,77 @@ class AdminController extends Controller
         }
 
         return redirect()->route('admin.users')->with('success', 'User updated successfully.');
+    }
+
+    public function deposits(Request $request)
+    {
+        $status = $request->query('status', 'pending');
+        $allowedStatuses = ['pending', 'approved', 'declined', 'all'];
+
+        if (!in_array($status, $allowedStatuses, true)) {
+            $status = 'pending';
+        }
+
+        $query = PendingDeposit::with(['user', 'wallet', 'reviewer'])
+            ->latest();
+
+        if ($status !== 'all') {
+            $query->where('status', $status);
+        }
+
+        $deposits = $query->paginate(15)->withQueryString();
+
+        $counts = [
+            'pending' => PendingDeposit::where('status', 'pending')->count(),
+            'approved' => PendingDeposit::where('status', 'approved')->count(),
+            'declined' => PendingDeposit::where('status', 'declined')->count(),
+        ];
+
+        return view('admin.deposits', compact('deposits', 'status', 'counts'));
+    }
+
+    public function approveDeposit(PendingDeposit $pendingDeposit)
+    {
+        if (!$pendingDeposit->isPending()) {
+            return back()->with('error', 'This deposit has already been reviewed.');
+        }
+
+        DB::transaction(function () use ($pendingDeposit) {
+            $wallet = $pendingDeposit->wallet;
+            $transaction = $wallet->deposit(
+                $pendingDeposit->amount,
+                $pendingDeposit->description,
+                $pendingDeposit->reference
+            );
+
+            $pendingDeposit->update([
+                'status' => 'approved',
+                'reviewed_by' => Auth::id(),
+                'reviewed_at' => now(),
+                'transaction_id' => $transaction->id,
+            ]);
+        });
+
+        return back()->with('success', 'Deposit approved and wallet credited.');
+    }
+
+    public function declineDeposit(Request $request, PendingDeposit $pendingDeposit)
+    {
+        if (!$pendingDeposit->isPending()) {
+            return back()->with('error', 'This deposit has already been reviewed.');
+        }
+
+        $validated = $request->validate([
+            'admin_note' => ['nullable', 'string', 'max:500'],
+        ]);
+
+        $pendingDeposit->update([
+            'status' => 'declined',
+            'reviewed_by' => Auth::id(),
+            'reviewed_at' => now(),
+            'admin_note' => $validated['admin_note'] ?? null,
+        ]);
+
+        return back()->with('success', 'Deposit declined.');
     }
 }

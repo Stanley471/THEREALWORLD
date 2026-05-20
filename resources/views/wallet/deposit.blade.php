@@ -10,7 +10,7 @@
         .plan-card.crypto { border-color: #ffa023; }
         .plan-card.card { border-color: #970008; opacity: 0.65; }
         .plan-header { margin-bottom: 1rem; }
-        .plan-name { font-size: 1.5rem; font-weight: 800; text-transform: uppercase; background: linear-gradient(109.78deg, #FFFFFF -13.37%, #FFCF23 38.96%, #FF8D3A 138.03%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .plan-name { font-size: 1.5rem; font-weight: 800; text-transform: uppercase; background: linear-gradient(109.78deg, #FFFFFF -13.37%, #FFCF23 38.96%, #FF8D3A 138.03%); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .plan-price { font-size: 3rem; font-weight: 800; margin-bottom: 0.25rem; }
         .plan-price-period { color: rgba(226,232,240,0.76); text-transform: uppercase; font-size: 0.95rem; }
         .features { display: grid; gap: 1rem; }
@@ -25,11 +25,20 @@
         .input-group label { font-size: 0.9rem; color: rgba(226,232,240,0.75); }
         .input-group input, .input-group select { width: 100%; padding: 0.95rem 1rem; border-radius: 0.85rem; border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.05); color: white; }
         .input-group input::placeholder { color: rgba(255,255,255,0.45); }
-        .crypto-note { color: rgba(226,232,240,0.7); font-size: 0.95rem; }
         .footer-text { color: rgba(226,232,240,0.6); margin-top: 1.5rem; text-align: center; }
     </style>
 
     <div class="container">
+        @if(session('error'))
+            <div style="background: rgba(248, 113, 113, 0.1); border: 1px solid rgba(248, 113, 113, 0.3); padding: 12px 16px; border-radius: 10px; margin-bottom: 20px; color: #f87171; font-size: 14px;">
+                {{ session('error') }}
+            </div>
+        @endif
+        @if($errors->any())
+            <div style="background: rgba(248, 113, 113, 0.1); border: 1px solid rgba(248, 113, 113, 0.3); padding: 12px 16px; border-radius: 10px; margin-bottom: 20px; color: #f87171; font-size: 14px;">
+                {{ $errors->first() }}
+            </div>
+        @endif
         <div class="page-header">
             <h1>Deposit with Crypto</h1>
             <p>Only cryptocurrency payments are accepted for wallet funding. Card checkout is currently unavailable.</p>
@@ -62,25 +71,24 @@
                 <form method="POST" action="{{ route('wallet.store.deposit') }}">
                     @csrf
                     <div class="input-group">
-                        <label for="amount">Deposit Amount</label>
-                        <input id="amount" name="amount" type="number" step="0.01" min="0.01" placeholder="Enter USD amount" required />
+                        <label for="amount">Deposit Amount (USD)</label>
+                        <input id="amount" name="amount" type="number" step="0.01" min="0.01" placeholder="Enter USD amount" value="{{ old('amount') }}" required />
                     </div>
                     <div class="input-group">
                         <label for="currency">Cryptocurrency</label>
-                        <select id="currency" disabled>
-                            <option>Bitcoin (BTC)</option>
-                            <option>Ethereum (ETH)</option>
-                            <option>USD Coin (USDC)</option>
+                        <select id="currency" name="currency" required>
+                            @foreach($currencies as $code => $currency)
+                                <option value="{{ $code }}" @selected(old('currency') === $code)>{{ $currency['label'] }}</option>
+                            @endforeach
                         </select>
                     </div>
                     <div class="input-group">
                         <label for="description">Description</label>
-                        <input id="description" name="description" type="text" placeholder="Deposit note (optional)" />
+                        <input id="description" name="description" type="text" placeholder="Deposit note (optional)" value="{{ old('description') }}" />
                     </div>
-                    <button class="plan-button crypto" type="submit">Deposit Crypto</button>
+                    <button class="plan-button crypto" type="submit">Continue to Payment Details</button>
                 </form>
 
-                <p class="crypto-note">Crypto only. Card payments are disabled until supported.</p>
             </div>
 
             <div class="plan-card card">

@@ -18,6 +18,11 @@ class Wallet extends Model
         return $this->hasMany(Transaction::class);
     }
 
+    public function pendingDeposits()
+    {
+        return $this->hasMany(PendingDeposit::class);
+    }
+
     public function deposit($amount, $description = null, $reference = null)
     {
         $this->balance += $amount;

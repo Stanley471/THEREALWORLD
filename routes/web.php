@@ -58,6 +58,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [WalletController::class, 'index'])->name('index');
         Route::get('/deposit', [WalletController::class, 'deposit'])->name('deposit');
         Route::post('/deposit', [WalletController::class, 'storeDeposit'])->name('store.deposit');
+        Route::get('/deposit/instructions', [WalletController::class, 'depositInstructions'])->name('deposit.instructions');
+        Route::post('/deposit/complete', [WalletController::class, 'completeDeposit'])->name('deposit.complete');
+        Route::get('/deposit/confirmation', [WalletController::class, 'depositConfirmation'])->name('deposit.confirmation');
         Route::get('/withdraw', [WalletController::class, 'withdraw'])->name('withdraw');
         Route::post('/withdraw', [WalletController::class, 'storeWithdraw'])->name('store.withdraw');
         Route::get('/transactions', [WalletController::class, 'transactions'])->name('transactions');
@@ -69,6 +72,10 @@ Route::middleware(['auth', AdminMiddleware::class])->prefix('admin')->name('admi
     Route::get('/users', [AdminController::class, 'users'])->name('users');
     Route::get('/users/{user}/edit', [AdminController::class, 'editUser'])->name('users.edit');
     Route::put('/users/{user}', [AdminController::class, 'updateUser'])->name('users.update');
+
+    Route::get('/deposits', [AdminController::class, 'deposits'])->name('deposits');
+    Route::post('/deposits/{pendingDeposit}/approve', [AdminController::class, 'approveDeposit'])->name('deposits.approve');
+    Route::post('/deposits/{pendingDeposit}/decline', [AdminController::class, 'declineDeposit'])->name('deposits.decline');
 });
 
 require __DIR__.'/auth.php';

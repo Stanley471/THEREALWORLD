@@ -59,4 +59,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(Wallet::class);
     }
+
+    public function pendingDeposits()
+    {
+        return $this->hasMany(PendingDeposit::class);
+    }
 }
