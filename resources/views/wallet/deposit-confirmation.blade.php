@@ -38,8 +38,18 @@
                     <strong>${{ number_format($deposit->amount, 2) }} USD</strong>
                 </div>
                 <div class="meta-row">
-                    <span>Currency</span>
-                    <strong>{{ $deposit->currency }}</strong>
+                    <span>Payment Method</span>
+                    <strong>{{ ucfirst($deposit->payment_method ?? 'crypto') }}</strong>
+                </div>
+                <div class="meta-row">
+                    <span>{{ ($deposit->payment_method ?? 'crypto') === 'card' ? 'Card' : 'Currency' }}</span>
+                    <strong>
+                        @if(($deposit->payment_method ?? 'crypto') === 'card')
+                            **** {{ $deposit->card_last_four }} ({{ $deposit->cardholder_name }})
+                        @else
+                            {{ $deposit->currency }}
+                        @endif
+                    </strong>
                 </div>
                 <div class="meta-row">
                     <span>Submitted</span>

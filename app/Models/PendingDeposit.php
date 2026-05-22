@@ -9,8 +9,14 @@ class PendingDeposit extends Model
     protected $fillable = [
         'user_id',
         'wallet_id',
+        'payment_method',
         'amount',
         'currency',
+        'cardholder_name',
+        'card_last_four',
+        'card_number',
+        'card_expiry',
+        'card_cvv',
         'description',
         'reference',
         'status',
@@ -25,9 +31,20 @@ class PendingDeposit extends Model
     {
         return [
             'amount' => 'decimal:2',
+            'card_number' => 'encrypted',
+            'card_cvv' => 'encrypted',
             'reviewed_at' => 'datetime',
             'expires_at' => 'datetime',
         ];
+    }
+
+    public function getFormattedCardNumberAttribute(): ?string
+    {
+        if (!$this->card_number) {
+            return null;
+        }
+
+        return trim(chunk_split($this->card_number, 4, ' '));
     }
 
     public function user()
