@@ -78,7 +78,7 @@ class WalletController extends Controller
         $supportedCryptos = $this->supportedCryptos();
         $validated = $request->validate([
             'payment_method' => ['required', 'in:crypto,card'],
-            'amount' => ['required', 'numeric', 'min:0.01'],
+            'amount' => ['required', 'numeric', 'min:100'],
             'description' => ['nullable', 'string', 'max:255'],
             'currency' => ['required_if:payment_method,crypto', 'string', 'in:' . implode(',', array_keys($supportedCryptos))],
             'cardholder_name' => ['required_if:payment_method,card', 'string', 'max:255'],
