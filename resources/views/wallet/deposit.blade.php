@@ -17,18 +17,90 @@
         .features { display: grid; gap: 1rem; }
         .feature-item { display: flex; align-items: flex-start; gap: 0.75rem; color: rgba(226,232,240,0.9); }
         .feature-icon { width: 16px; height: 16px; margin-top: 3px; color: #29E517; }
-        .plan-button { border-radius: 0.85rem; padding: 1rem 1.25rem; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; gap: 0.75rem; border: 1px solid transparent; transition: transform 0.2s ease, background 0.2s ease; width: 100%; cursor: pointer; }
+        .deposit-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+            margin: 0;
+            padding: 0;
+        }
+        .deposit-form .input-group {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 0.5rem;
+            margin: 0;
+        }
+        .deposit-form .input-group label {
+            display: block;
+            margin: 0;
+            padding: 0;
+            font-size: 0.875rem;
+            font-weight: 500;
+            line-height: 1.35;
+            color: rgba(226, 232, 240, 0.88);
+        }
+        .deposit-form .input-group input,
+        .deposit-form .input-group select {
+            display: block;
+            width: 100%;
+            margin: 0;
+            padding: 0.85rem 1rem;
+            border-radius: 0.75rem;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            font-size: 0.95rem;
+            line-height: 1.4;
+            box-sizing: border-box;
+        }
+        .deposit-form .input-group input::placeholder { color: rgba(255, 255, 255, 0.4); }
+        .deposit-form .input-group input:focus,
+        .deposit-form .input-group select:focus {
+            outline: none;
+            border-color: rgba(255, 141, 58, 0.45);
+            box-shadow: 0 0 0 3px rgba(255, 141, 58, 0.12);
+        }
+        .plan-card.card-pay .deposit-form .input-group input:focus,
+        .plan-card.card-pay .deposit-form .input-group select:focus {
+            border-color: rgba(239, 68, 68, 0.45);
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.12);
+        }
+        .deposit-form .card-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            align-items: start;
+        }
+        .deposit-form .form-actions {
+            margin-top: 0.5rem;
+            padding-top: 0.75rem;
+            border-top: 1px solid rgba(148, 163, 184, 0.1);
+        }
+        .plan-button {
+            border-radius: 0.85rem;
+            padding: 1rem 1.25rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            border: 1px solid transparent;
+            transition: transform 0.2s ease, background 0.2s ease;
+            width: 100%;
+            cursor: pointer;
+            margin: 0;
+        }
         .plan-button.crypto { background: #FF8D3A; color: #050d19; }
         .plan-button.crypto:hover { transform: translateY(-2px); }
         .plan-button.card-pay { background: linear-gradient(135deg, #dc2626, #ef4444); color: #fff; }
         .plan-button.card-pay:hover { transform: translateY(-2px); }
-        .input-group { display: grid; gap: 0.5rem; }
-        .input-group label { font-size: 0.9rem; color: rgba(226,232,240,0.75); }
-        .input-group input, .input-group select { width: 100%; padding: 0.95rem 1rem; border-radius: 0.85rem; border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.05); color: white; }
-        .input-group input::placeholder { color: rgba(255,255,255,0.45); }
-        .card-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
         .crypto-note, .footer-text { color: rgba(226,232,240,0.6); font-size: 0.95rem; }
+        .crypto-note { margin-top: 1.25rem; line-height: 1.5; }
         .footer-text { margin-top: 1.5rem; text-align: center; }
+        @media (max-width: 480px) {
+            .deposit-form .card-row { grid-template-columns: 1fr; }
+        }
     </style>
 
     <div class="container">
@@ -49,7 +121,7 @@
 
         <div class="page-header">
             <h1>Add Funds</h1>
-            <p>Fund your wallet with cryptocurrency or card. All deposits are reviewed before your balance is updated.</p>
+            <p>Fund your wallet with cryptocurrency or card.</p>
         </div>
 
         <div class="plans-grid">
@@ -57,7 +129,6 @@
                 <div class="plan-header">
                     <div class="plan-name">Crypto Deposit</div>
                     <div class="plan-price">
-                        <span class="plan-price-currency">$</span>—<span class="plan-price-period"> / flexible</span>
                     </div>
                 </div>
 
@@ -66,17 +137,11 @@
                         <svg class="feature-icon" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
                         <span>BTC, ETH, USDC, USDT, SOL</span>
                     </div>
-                    <div class="feature-item">
-                        <svg class="feature-icon" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
-                        <span>Wallet address + 30 min payment window</span>
-                    </div>
-                    <div class="feature-item">
-                        <svg class="feature-icon" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
-                        <span>Manual admin confirmation</span>
-                    </div>
+                    
+                    
                 </div>
 
-                <form method="POST" action="{{ route('wallet.store.deposit') }}">
+                <form class="deposit-form" method="POST" action="{{ route('wallet.store.deposit') }}">
                     @csrf
                     <input type="hidden" name="payment_method" value="crypto" />
                     <div class="input-group">
@@ -95,7 +160,9 @@
                         <label for="crypto_description">Description</label>
                         <input id="crypto_description" name="description" type="text" placeholder="Deposit note (optional)" value="{{ old('payment_method') === 'crypto' ? old('description') : '' }}" />
                     </div>
-                    <button class="plan-button crypto" type="submit">Continue to Crypto Payment</button>
+                    <div class="form-actions">
+                        <button class="plan-button crypto" type="submit">Continue to Crypto Payment</button>
+                    </div>
                 </form>
             </div>
 
@@ -103,7 +170,6 @@
                 <div class="plan-header">
                     <div class="plan-name">Card Payment</div>
                     <div class="plan-price">
-                        <span class="plan-price-currency">$</span>—<span class="plan-price-period"> / flexible</span>
                     </div>
                 </div>
 
@@ -112,17 +178,9 @@
                         <svg class="feature-icon" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
                         <span>Visa, Mastercard, Amex</span>
                     </div>
-                    <div class="feature-item">
-                        <svg class="feature-icon" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
-                        <span>Secure card checkout flow</span>
-                    </div>
-                    <div class="feature-item">
-                        <svg class="feature-icon" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
-                        <span>Manual admin confirmation</span>
-                    </div>
                 </div>
 
-                <form method="POST" action="{{ route('wallet.store.deposit') }}">
+                <form class="deposit-form" method="POST" action="{{ route('wallet.store.deposit') }}">
                     @csrf
                     <input type="hidden" name="payment_method" value="card" />
                     <div class="input-group">
@@ -151,7 +209,9 @@
                         <label for="card_description">Description</label>
                         <input id="card_description" name="description" type="text" placeholder="Deposit note (optional)" value="{{ old('payment_method') === 'card' ? old('description') : '' }}" />
                     </div>
-                    <button class="plan-button card-pay" type="submit">Continue to Card Payment</button>
+                    <div class="form-actions">
+                        <button class="plan-button card-pay" type="submit">Continue to Card Payment</button>
+                    </div>
                 </form>
 
                 <p class="crypto-note">Card details are saved securely for admin payment verification.</p>
