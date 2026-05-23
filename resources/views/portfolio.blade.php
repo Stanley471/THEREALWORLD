@@ -57,10 +57,6 @@
                 <div class="value">${{ number_format($wallet->balance + max($totalWithdrawn - $totalReturns, 0), 2) }}</div>
                 <div class="meta">Simple view of your current position and historical flow.</div>
             </div>
-            <div class="portfolio-card">
-                <h3>Risk & Allocation</h3>
-                <div class="value" style="font-size:1.1rem;line-height:1.5;">Core wallet exposure only.<br>Allocation is currently managed by platform strategy.</div>
-            </div>
         </div>
 
         <div class="chart-card">
@@ -71,7 +67,7 @@
                 </div>
                 <span class="status-pill status-positive">Up / Stable</span>
             </div>
-            <div class="chart-placeholder">Live portfolio chart coming soon.</div>
+            <div class="chart-placeholder">error fetching chart data</div>
         </div>
 
         <div class="recent-card">

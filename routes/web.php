@@ -38,6 +38,7 @@ Route::middleware('auth')->group(function () {
     Route::prefix('settings')->name('settings.')->group(function () {
         Route::get('/', [SettingsController::class, 'index'])->name('index');
         Route::post('/withdrawal', [SettingsController::class, 'updateWithdrawalAddress'])->name('withdrawal.update');
+        Route::post('/pin', [SettingsController::class, 'updatePin'])->name('pin.update');
     });
 
     Route::get('/portfolio', function () {

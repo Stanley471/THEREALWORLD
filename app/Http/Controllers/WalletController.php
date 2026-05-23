@@ -228,7 +228,16 @@ class WalletController extends Controller
         $validated = $request->validate([
             'amount' => ['required', 'numeric', 'min:0.01'],
             'description' => ['nullable', 'string', 'max:255'],
+            'transaction_pin' => ['required', 'string', 'size:4'],
         ]);
+
+        if (!$user->transaction_pin) {
+            return redirect()->route('settings.index')->with('error', 'Please set up a Transaction PIN before making a withdrawal.');
+        }
+
+        if ($validated['transaction_pin'] !== $user->transaction_pin) {
+            return back()->withErrors(['transaction_pin' => 'Incorrect Transaction PIN.']);
+        }
 
         try {
             $wallet = $user->wallet ?? $user->wallet()->create();

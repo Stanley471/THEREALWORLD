@@ -70,6 +70,13 @@
                     <label for="description">Description</label>
                     <textarea id="description" name="description" placeholder="Withdrawal note (optional)"></textarea>
                 </div>
+                <div class="form-group">
+                    <label for="transaction_pin">Transaction PIN</label>
+                    <input id="transaction_pin" name="transaction_pin" type="password" maxlength="4" placeholder="••••" required style="letter-spacing: 4px; text-align: center; max-width: 150px;" />
+                    @error('transaction_pin')
+                        <p style="color:#f87171;font-size:13px;margin:0;">{{ $message }}</p>
+                    @enderror
+                </div>
                 <button class="submit-button" type="submit">Withdraw Funds</button>
             </form>
 

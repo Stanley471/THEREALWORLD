@@ -23,6 +23,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'transaction_pin',
         'withdrawal_address',
         'daily_return_min',
         'daily_return_max',

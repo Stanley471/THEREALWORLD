@@ -39,6 +39,13 @@
     </div>
   @endif
 
+  @if(session('error'))
+    <div style="background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);padding:12px 16px;border-radius:10px;margin-bottom:20px;color:#f87171;font-size:14px;display:flex;align-items:center;gap:10px;">
+      <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      {{ session('error') }}
+    </div>
+  @endif
+
   <div class="settings-grid">
     <!-- Settings Header -->
     <div class="card">
@@ -80,10 +87,27 @@
             @enderror
             
             @if($user->withdrawal_address)
-              <div class="settings-note">
+              <div class="settings-note" style="margin-top:8px;">
                 <strong>Current address:</strong> {{ Str::limit($user->withdrawal_address, 50, '...') }}
               </div>
             @endif
+          </div>
+
+          <div class="settings-field" style="margin-top: 10px;">
+            <label for="transaction_pin_wd">Transaction PIN</label>
+            <p>Enter your 4-digit PIN to authorize this change.</p>
+            <input 
+              type="password" 
+              id="transaction_pin_wd" 
+              name="transaction_pin" 
+              placeholder="••••"
+              maxlength="4"
+              class="settings-input"
+              style="width: 120px; text-align: center; letter-spacing: 4px;"
+            >
+            @error('transaction_pin')
+              <p style="color:#f87171;font-size:13px;margin-top:8px;">{{ $message }}</p>
+            @enderror
           </div>
 
           <div class="settings-actions">
@@ -98,19 +122,51 @@
       </div>
     </div>
 
-    <!-- Other Settings Placeholder -->
+    <!-- Security Settings / Transaction PIN -->
     <div class="card">
       <div class="card-header" style="display:flex;align-items:center;gap:10px;">
         <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c1.657 0 3-1.567 3-3.5S13.657 4 12 4 9 5.567 9 7.5 10.343 11 12 11zm0 0v5m-3 3h6"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 11V8a8 8 0 0116 0v3"/></svg>
-        <h2>Security Settings</h2>
+        <h2>Transaction PIN</h2>
       </div>
-      <div class="card-body" style="display:grid;gap:12px;">
-        <div class="settings-note" style="background:rgba(94,234,212,.08);border:1px solid rgba(94,234,212,.2);border-radius:8px;font-size:14px;color:#2dd4bf;">
-          ✓ Two-factor authentication is disabled
-        </div>
-        <button class="settings-reset" style="background:transparent;border:1px solid #475569;color:#94a3b8;">
-          Enable 2FA
-        </button>
+      <div class="card-body">
+        <form method="POST" action="{{ route('settings.pin.update') }}" class="settings-form">
+          @csrf
+          
+          @if($user->transaction_pin)
+            <div class="settings-field" style="margin-bottom: 20px;">
+              <label for="current_pin">Current PIN</label>
+              <input type="password" id="current_pin" name="current_pin" placeholder="••••" maxlength="4" class="settings-input" style="width: 120px; text-align: center; letter-spacing: 4px;">
+              @error('current_pin')
+                <p style="color:#f87171;font-size:13px;margin-top:8px;">{{ $message }}</p>
+              @enderror
+            </div>
+          @else
+            <div class="settings-note" style="background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);border-radius:8px;font-size:14px;color:#f87171;margin-bottom:20px;">
+              ⚠️ You have not set a Transaction PIN yet. A PIN is required to make deposits, withdrawals, and to change your withdrawal address.
+            </div>
+          @endif
+
+          <div style="display:flex; gap: 20px; flex-wrap: wrap;">
+            <div class="settings-field">
+              <label for="new_pin">{{ $user->transaction_pin ? 'New PIN' : 'Create PIN' }}</label>
+              <input type="password" id="new_pin" name="new_pin" placeholder="••••" maxlength="4" class="settings-input" style="width: 120px; text-align: center; letter-spacing: 4px;">
+              @error('new_pin')
+                <p style="color:#f87171;font-size:13px;margin-top:8px;">{{ $message }}</p>
+              @enderror
+            </div>
+
+            <div class="settings-field">
+              <label for="new_pin_confirmation">Confirm PIN</label>
+              <input type="password" id="new_pin_confirmation" name="new_pin_confirmation" placeholder="••••" maxlength="4" class="settings-input" style="width: 120px; text-align: center; letter-spacing: 4px;">
+            </div>
+          </div>
+
+          <div class="settings-actions" style="margin-top: 20px;">
+            <button type="submit" class="settings-button">
+              {{ $user->transaction_pin ? 'Update PIN' : 'Set PIN' }}
+            </button>
+          </div>
+        </form>
       </div>
     </div>
 
