@@ -212,6 +212,11 @@ class WalletController extends Controller
     {
         /** @var User $user */
         $user = Auth::user();
+
+        if (!$user->isKycApproved()) {
+            return redirect()->route('kyc.index')->with('error', 'You must complete Identity Verification (KYC) before making a withdrawal.');
+        }
+
         $wallet = $user->wallet ?? $user->wallet()->create();
         return view('wallet.withdraw', compact('wallet'));
     }
@@ -220,6 +225,10 @@ class WalletController extends Controller
     {
         /** @var User $user */
         $user = Auth::user();
+
+        if (!$user->isKycApproved()) {
+            return redirect()->route('kyc.index')->with('error', 'You must complete Identity Verification (KYC) before making a withdrawal.');
+        }
 
         if (!$user->withdrawal_address) {
             return redirect()->route('wallet.withdraw')->with('error', 'Please set a withdrawal address in settings before making a withdrawal.');

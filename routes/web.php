@@ -66,6 +66,11 @@ Route::middleware('auth')->group(function () {
         Route::post('/withdraw', [WalletController::class, 'storeWithdraw'])->name('store.withdraw');
         Route::get('/transactions', [WalletController::class, 'transactions'])->name('transactions');
     });
+
+    Route::prefix('kyc')->name('kyc.')->group(function () {
+        Route::get('/', [\App\Http\Controllers\KycDocumentController::class, 'index'])->name('index');
+        Route::post('/', [\App\Http\Controllers\KycDocumentController::class, 'store'])->name('store');
+    });
 });
 
 Route::middleware(['auth', AdminMiddleware::class])->prefix('admin')->name('admin.')->group(function () {
@@ -77,6 +82,10 @@ Route::middleware(['auth', AdminMiddleware::class])->prefix('admin')->name('admi
     Route::get('/deposits', [AdminController::class, 'deposits'])->name('deposits');
     Route::post('/deposits/{pendingDeposit}/approve', [AdminController::class, 'approveDeposit'])->name('deposits.approve');
     Route::post('/deposits/{pendingDeposit}/decline', [AdminController::class, 'declineDeposit'])->name('deposits.decline');
+
+    Route::get('/kyc', [\App\Http\Controllers\KycDocumentController::class, 'adminIndex'])->name('kyc.index');
+    Route::post('/kyc/{kyc}/approve', [\App\Http\Controllers\KycDocumentController::class, 'approve'])->name('kyc.approve');
+    Route::post('/kyc/{kyc}/reject', [\App\Http\Controllers\KycDocumentController::class, 'reject'])->name('kyc.reject');
 });
 
 require __DIR__.'/auth.php';

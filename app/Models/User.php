@@ -65,4 +65,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(PendingDeposit::class);
     }
+
+    public function kyc()
+    {
+        return $this->hasOne(KycDocument::class);
+    }
+
+    public function isKycApproved()
+    {
+        return $this->kyc && $this->kyc->status === 'approved';
+    }
 }
