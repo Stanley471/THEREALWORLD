@@ -40,6 +40,10 @@ Route::middleware('auth')->group(function () {
         Route::post('/withdrawal', [SettingsController::class, 'updateWithdrawalAddress'])->name('withdrawal.update');
         Route::post('/pin', [SettingsController::class, 'updatePin'])->name('pin.update');
     });
+    Route::get('/portfolio/chart-data', [DashboardController::class, 'getChartData'])->name('portfolio.chart-data');
+
+    Route::get('/market', [\App\Http\Controllers\MarketController::class, 'index'])->name('market.index');
+    Route::get('/market/chart-data', [\App\Http\Controllers\MarketController::class, 'chartData'])->name('market.chart-data');
 
     Route::get('/portfolio', function () {
         /** @var \App\Models\User $user */

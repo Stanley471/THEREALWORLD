@@ -24,13 +24,18 @@ class DashboardController extends Controller
         $trendDates = collect(range($trendWindow, 0, -1))
             ->map(fn ($days) => now()->subDays($days)->format('Y-m-d'));
 
-        $dailyNet = $wallet->transactions()
-            ->where('created_at', '>=', now()->subDays($trendWindow)->startOfDay())
-            ->get()
-            ->groupBy(fn ($tx) => $tx->created_at->format('Y-m-d'))
-            ->map(fn ($items) => $items->sum(fn ($tx) => in_array($tx->type, ['deposit', 'returns', 'adjustment']) ? $tx->amount : -$tx->amount));
+        $allTx = $wallet->transactions()->get();
+        $trendValues = [];
+        foreach ($trendDates as $date) {
+            $endOfDay = Carbon::parse($date)->endOfDay();
+            $balanceAtDate = $allTx->where('created_at', '<=', $endOfDay)
+                ->reduce(function ($carry, $tx) {
+                    $isPositive = in_array($tx->type, ['deposit', 'returns', 'adjustment']);
+                    return $carry + ($isPositive ? $tx->amount : -$tx->amount);
+                }, 0);
+            $trendValues[] = (float) $balanceAtDate;
+        }
 
-        $trendValues = $trendDates->map(fn ($date) => $dailyNet->get($date, 0))->all();
         $trendLabels = $trendDates->map(fn ($date) => Carbon::parse($date)->format('D'))->all();
 
         $trendMax = max($trendValues) ?: 1;
@@ -55,6 +60,63 @@ class DashboardController extends Controller
             'trendMin' => $trendMin,
             'trendMax' => $trendMax,
             'trendRange' => $trendRange,
+        ]);
+    }
+
+    public function getChartData(Request $request)
+    {
+        /** @var User $user */
+        $user = Auth::user();
+        $wallet = $user->wallet;
+
+        if (!$wallet) {
+            return response()->json(['labels' => [], 'values' => []]);
+        }
+
+        $range = $request->query('range', '7d');
+
+        $days = match($range) {
+            '7d'  => 7,
+            '1m'  => 30,
+            '1y'  => 365,
+            'all' => null,
+            default => 7,
+        };
+
+        if ($days === null) {
+            $firstTx = $wallet->transactions()->oldest('created_at')->first();
+            $days = $firstTx ? max(1, now()->diffInDays($firstTx->created_at)) : 7;
+        }
+
+        $trendDates = collect(range($days, 0, -1))
+            ->map(fn ($d) => now()->subDays($d)->format('Y-m-d'));
+
+        $allTx = $wallet->transactions()->get();
+        $trendValues = [];
+        $trendLabels = [];
+
+        foreach ($trendDates as $date) {
+            $endOfDay = Carbon::parse($date)->endOfDay();
+            $balanceAtDate = $allTx->where('created_at', '<=', $endOfDay)
+                ->reduce(function ($carry, $tx) {
+                    $isPositive = in_array($tx->type, ['deposit', 'returns', 'adjustment']);
+                    return $carry + ($isPositive ? $tx->amount : -$tx->amount);
+                }, 0);
+            
+            $trendValues[] = (float) $balanceAtDate;
+
+            if ($range === '7d') {
+                $trendLabels[] = Carbon::parse($date)->format('D'); // e.g. Mon, Tue
+            } elseif ($range === '1y' || $range === 'all') {
+                $trendLabels[] = Carbon::parse($date)->format('M Y');
+            } else {
+                $trendLabels[] = Carbon::parse($date)->format('M d');
+            }
+        }
+
+        return response()->json([
+            'labels' => $trendLabels,
+            'values' => $trendValues
         ]);
     }
 }

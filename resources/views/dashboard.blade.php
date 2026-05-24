@@ -28,36 +28,145 @@
         </div>
       </div>
 
-      <div class="line-graph-wrap">
-        @php
-          $points = collect($trendValues)->map(function ($value, $index) use ($trendMin, $trendRange) {
-              $x = 80 + ($index * 90);
-              $y = 140 - (($value - $trendMin) / $trendRange) * 100;
-              return ['x' => $x, 'y' => $y, 'value' => $value];
-          });
-          $segments = [];
-          for ($i = 0; $i < $points->count() - 1; $i++) {
-              $current = $points[$i];
-              $next = $points[$i + 1];
-              $segments[] = [
-                  'd' => 'M' . $current['x'] . ',' . $current['y'] . ' L' . $next['x'] . ',' . $next['y'],
-                  'color' => $next['value'] >= $current['value'] ? '#22c55e' : '#f87171',
-              ];
-          }
-        @endphp
+      <div x-data="portfolioChart()" x-init="initChart()" class="hero-chart-container" style="position: relative; margin-top: 15px;">
+        
+        <div style="display: flex; gap: 8px; justify-content: flex-end; margin-bottom: 10px;">
+            <template x-for="r in ['7d', '1m', '1y', 'all']" :key="r">
+                <button 
+                    @click="setRange(r)" 
+                    x-text="r.toUpperCase()" 
+                    :class="{'active-toggle': range === r}"
+                    style="padding: 4px 12px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); background: transparent; color: #94a3b8; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s;"
+                ></button>
+            </template>
+        </div>
 
-        <svg viewBox="0 0 700 170" preserveAspectRatio="none" class="line-graph">
-          @foreach($segments as $segment)
-            <path d="{{ $segment['d'] }}" fill="none" stroke="{{ $segment['color'] }}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
-          @endforeach
-        </svg>
+        <div class="line-graph-wrap" style="background: #1c1c1e; border-radius: 12px; padding: 15px; height: 220px; position: relative;">
+          <!-- Loader -->
+          <div x-show="loading" style="position: absolute; inset: 0; background: rgba(28, 28, 30, 0.7); display: flex; align-items: center; justify-content: center; z-index: 10; border-radius: 12px; backdrop-filter: blur(2px);">
+              <div style="width: 24px; height: 24px; border: 3px solid rgba(201, 153, 42, 0.3); border-top-color: #C9992A; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+          </div>
 
-        <div class="chart-x compact">
-          @foreach($trendLabels as $label)
-            <span>{{ $label }}</span>
-          @endforeach
+          <canvas id="portfolioChart"></canvas>
         </div>
       </div>
+
+      <style>
+          .active-toggle {
+              background: rgba(201, 153, 42, 0.15) !important;
+              color: #C9992A !important;
+              border-color: #C9992A !important;
+          }
+          @keyframes spin {
+              to { transform: rotate(360deg); }
+          }
+      </style>
+
+      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+      <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('portfolioChart', () => ({
+                range: '7d',
+                loading: false,
+                chartInstance: null,
+
+                initChart() {
+                    const initialLabels = @json($trendLabels);
+                    const initialValues = @json($trendValues);
+                    this.buildChart(initialLabels, initialValues);
+                },
+
+                setRange(newRange) {
+                    this.range = newRange;
+                    this.loading = true;
+                    fetch(`/portfolio/chart-data?range=${newRange}`)
+                        .then(res => res.json())
+                        .then(json => {
+                            this.buildChart(json.labels, json.values);
+                        })
+                        .catch(() => {})
+                        .finally(() => { this.loading = false; });
+                },
+
+                buildChart(labels, data) {
+                    // Always destroy old instance first so Chart.js starts fresh
+                    if (this.chartInstance) {
+                        this.chartInstance.destroy();
+                        this.chartInstance = null;
+                    }
+
+                    const canvas = document.getElementById('portfolioChart');
+                    if (!canvas) return;
+
+                    const canvasCtx = canvas.getContext('2d');
+                    const gradient = canvasCtx.createLinearGradient(0, 0, 0, 200);
+                    gradient.addColorStop(0, 'rgba(201, 153, 42, 0.4)');
+                    gradient.addColorStop(1, 'rgba(201, 153, 42, 0)');
+
+                    this.chartInstance = new Chart(canvasCtx, {
+                        type: 'line',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: 'Balance',
+                                data: data,
+                                fill: true,
+                                backgroundColor: gradient,
+                                borderColor: '#C9992A',
+                                segment: {
+                                    borderColor: seg => seg.p0.parsed.y > seg.p1.parsed.y ? '#ef4444' : '#10b981'
+                                },
+                                borderWidth: 2.5,
+                                tension: 0.4,
+                                pointRadius: 0,
+                                pointHoverRadius: 6,
+                                pointBackgroundColor: '#C9992A'
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            interaction: { mode: 'index', intersect: false },
+                            plugins: {
+                                legend: { display: false },
+                                tooltip: {
+                                    backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                                    titleColor: '#94a3b8',
+                                    bodyColor: '#fff',
+                                    borderColor: 'rgba(255,255,255,0.1)',
+                                    borderWidth: 1,
+                                    callbacks: {
+                                        label: function(context) {
+                                            return new Intl.NumberFormat('en-US', {
+                                                style: 'currency', currency: 'USD'
+                                            }).format(context.parsed.y);
+                                        }
+                                    }
+                                }
+                            },
+                            scales: {
+                                x: {
+                                    grid: { display: false },
+                                    border: { display: false },
+                                    ticks: {
+                                        color: '#94a3b8',
+                                        maxTicksLimit: 7,
+                                        maxRotation: 0,
+                                        font: { size: 11 }
+                                    }
+                                },
+                                y: {
+                                    grid: { color: 'rgba(148, 163, 184, 0.1)' },
+                                    border: { display: false },
+                                    ticks: { display: false }
+                                }
+                            }
+                        }
+                    });
+                }
+            }));
+        });
+      </script>
     </div>
 
   

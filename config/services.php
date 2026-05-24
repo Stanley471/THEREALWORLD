@@ -35,4 +35,8 @@ return [
         ],
     ],
 
+    'twelvedata' => [
+        'key' => env('TWELVE_DATA_KEY'),
+    ],
+
 ];
