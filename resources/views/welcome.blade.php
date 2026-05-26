@@ -30,7 +30,8 @@
                         </svg>
                         MENU
                     </summary>
-                    <div class="absolute left-0 top-full mt-3 w-screen max-w-xs rounded-3xl bg-[#08070D]/95 p-5 shadow-2xl backdrop-blur-xl">
+                    <!-- Desktop dropdown (keeps original small dropdown on wide screens) -->
+                    <div class="absolute left-0 top-full mt-3 w-screen max-w-xs rounded-3xl bg-[#08070D]/95 p-5 shadow-2xl backdrop-blur-xl hidden lg:block">
                         <ul class="space-y-4">
                             <li><a href="/" class="block text-base font-semibold text-white hover:text-[#FFCF23] transition">Homepage</a></li>
                             <li><a href="#courses" class="block text-base font-semibold text-white hover:text-[#FFCF23] transition">Courses</a></li>
@@ -39,6 +40,31 @@
                             <li><a href="https://www.jointherealworld.com/articles" class="block text-base font-semibold text-white hover:text-[#FFCF23] transition">Articles</a></li>
                         </ul>
                         <div class="mt-6 pt-4">
+                            <a href="{{ route('login') }}" class="block w-full text-center rounded-full bg-white px-4 py-3 text-[#08070D] font-semibold hover:bg-slate-100 transition">Join The Real World</a>
+                        </div>
+                    </div>
+
+                    <!-- Mobile full-screen overlay -->
+                    <div id="mobile-menu-overlay" class="fixed inset-0 z-50 p-6 hidden lg:hidden" style="background-color:#08070D;min-height:100vh;backdrop-filter:none;">
+                        <div class="flex items-center justify-between mb-6">
+                            <button id="mobile-menu-close" aria-label="Close menu" class="inline-flex items-center gap-3 text-sm font-semibold text-white">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                                <span>MENU</span>
+                            </button>
+                            <img src="{{ asset('images/logo.webp') }}" alt="logo" class="h-10 w-auto object-contain" />
+                        </div>
+
+                        <nav class="mb-6">
+                            <ul class="space-y-6 text-lg">
+                                <li><a href="/" class="block font-semibold text-white hover:text-[#FFCF23]">Homepage</a></li>
+                                <li><a href="#courses" class="block font-semibold text-white hover:text-[#FFCF23]">Courses</a></li>
+                                <li><a href="https://www.jointherealworld.com/newsletter" class="block font-semibold text-white hover:text-[#FFCF23]">Newsletter</a></li>
+                                <li><a href="https://www.jointherealworld.com/download" class="block font-semibold text-white hover:text-[#FFCF23]">Download App</a></li>
+                                <li><a href="https://www.jointherealworld.com/articles" class="block font-semibold text-white hover:text-[#FFCF23]">Articles</a></li>
+                            </ul>
+                        </nav>
+
+                        <div class="mt-auto">
                             <a href="{{ route('login') }}" class="block w-full text-center rounded-full bg-white px-4 py-3 text-[#08070D] font-semibold hover:bg-slate-100 transition">Join The Real World</a>
                         </div>
                     </div>
@@ -83,18 +109,10 @@
                 <!-- Video - mobile: before heading (order-3), desktop: after description (order-5) -->
                 <div class="order-3 lg:order-5 w-full max-w-2xl mb-8">
                     <div class="relative w-full rounded-2xl overflow-hidden border border-white/10 bg-black/40 backdrop-blur-sm" style="aspect-ratio: 16/9;">
-                        <video class="w-full h-full object-cover" controls playsinline preload="metadata" poster="">
-                            <!-- <source src="{{ asset('videos/hero.mp4') }}" type="video/mp4"> -->
+                        <video class="w-full h-full object-cover" autoplay muted controls playsinline preload="metadata" poster="">
+                            <source src="{{ asset('videos/hero.mp4') }}" type="video/mp4">
                             Your browser does not support the video tag.
-                        </video>
-                        <!-- Play button overlay (shows when no video source or as poster) -->
-                        <div class="absolute inset-0 flex items-center justify-center bg-black/30 pointer-events-none">
-                            <div class="w-16 h-16 rounded-full bg-white/20 backdrop-blur flex items-center justify-center border border-white/30">
-                                <svg class="w-7 h-7 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M8 5v14l11-7z"/>
-                                </svg>
-                            </div>
-                        </div>
+                        </video>                        
                     </div>
                 </div>
 
@@ -123,9 +141,9 @@
                         alt="Enrolled People"
                         loading="lazy"
                         width="89"
-                        height="35"
+                        height="20"
                         decoding="async"
-                        src="{{ asset('images/student_profiles.png') }}"
+                        src="{{ asset('images/logo.webp') }}"
                         class="h-[35px] w-auto"
                     />
                     <p class="text-[13px] sm:text-sm text-slate-300">
@@ -136,59 +154,56 @@
             </div>
         </section>
 
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const nav = document.querySelector('nav');
+                const details = nav?.querySelector('details');
+                const summary = details?.querySelector('summary');
+                const overlay = document.getElementById('mobile-menu-overlay');
+                const closeBtn = document.getElementById('mobile-menu-close');
 
-        <!-- Learning Features -->
-        <section class="relative py-16 px-4 sm:px-6 lg:px-8">
-            <div class="max-w-6xl mx-auto relative">
-                <div class="grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)_auto_minmax(0,1fr)] items-center text-center lg:text-left">
-                    <div class="flex justify-center lg:justify-end">
-                        <div class="flex items-center gap-4">
-                            <div class="flex h-14 w-14 items-center justify-center rounded-full bg-white/5">
-                                <svg class="w-7 h-7 text-[#FFCF23]" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                                </svg>
-                            </div>
-                            <div class="space-y-1">
-                                <p class="text-[10px] uppercase tracking-[0.35em] text-slate-400">World Class</p>
-                                <p class="text-xl lg:text-3xl font-bold text-white">Learning</p>
-                            </div>
-                        </div>
-                    </div>
+                function openMobile() {
+                    overlay.classList.remove('hidden');
+                    document.body.style.overflow = 'hidden';
+                }
 
-                    <div class="hidden lg:flex justify-center text-[#FFCF23] text-3xl font-bold">→</div>
+                function closeMobile() {
+                    overlay.classList.add('hidden');
+                    document.body.style.overflow = '';
+                    if (details) details.open = false;
+                }
 
-                    <div class="flex justify-center lg:justify-start">
-                        <div class="flex items-center gap-4">
-                            <div class="flex h-14 w-14 items-center justify-center rounded-full bg-white/5">
-                                <svg class="w-7 h-7 text-[#FFCF23]" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M5 7h14v2H5V7zm0 4h14v2H5v-2zm0 4h14v2H5v-2z" />
-                                </svg>
-                            </div>
-                            <div class="space-y-1">
-                                <p class="text-[10px] uppercase tracking-[0.35em] text-slate-400">Scale From Zero</p>
-                                <p class="text-xl lg:text-3xl font-bold text-white">To 10k/Mo</p>
-                            </div>
-                        </div>
-                    </div>
+                if (summary) {
+                    summary.addEventListener('click', function (e) {
+                        if (window.innerWidth < 1024) {
+                            e.preventDefault();
+                            if (overlay.classList.contains('hidden')) {
+                                openMobile();
+                                if (details) details.open = true;
+                            } else {
+                                closeMobile();
+                            }
+                        }
+                    });
+                }
 
-                    <div class="hidden lg:flex justify-center text-white text-3xl font-bold">→</div>
+                closeBtn?.addEventListener('click', closeMobile);
 
-                    <div class="flex justify-center lg:justify-start">
-                        <div class="flex items-center gap-4">
-                            <div class="flex h-14 w-14 items-center justify-center rounded-full bg-white/5">
-                                <svg class="w-7 h-7 text-[#FFCF23]" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M16 4c0-1.11.89-2 2-2s2 .89 2 2-.89 2-2 2-2-.89-2-2zm4 18v-6h2.5l-2.54-7.63A2.01 2.01 0 0017.94 6H16v2h1.89l.76 2.27L12 15.21l-6.65-4.94L6.11 8H8V6H5.05c-.83 0-1.55.52-1.85 1.29L.5 16H3v6c0 1.11.89 2 2 2h4c1.11 0 2-.89 2-2v-2h4v2c0 1.11.89 2 2 2h4c1.11 0 2-.89 2-2z"/>
-                                </svg>
-                            </div>
-                            <div class="space-y-1">
-                                <p class="text-[10px] uppercase tracking-[0.35em] text-slate-400">1-on-1 Advice</p>
-                                <p class="text-xl lg:text-3xl font-bold text-white">From Experts</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+                overlay?.querySelectorAll('a').forEach(function (a) {
+                    a.addEventListener('click', function () {
+                        // allow small delay for navigation, then close
+                        setTimeout(closeMobile, 50);
+                    });
+                });
+
+                document.addEventListener('keydown', function (e) {
+                    if (e.key === 'Escape') closeMobile();
+                });
+            });
+        </script>
+
+
+        
 
         <!-- Stats Section -->
         <section id="community" class="py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-[#FFCF23]/10 to-[#FF8D3A]/10 border-y border-white/10">
@@ -208,6 +223,149 @@
             </div>
         </section>
 
+        <!-- Feature Icons Section -->
+            <section class="py-8 px-4 sm:px-6 lg:px-8">
+                <div class="max-w-4xl mx-auto">
+                    <div class="grid grid-cols-3 gap-2 sm:gap-8 text-center">
+                        <!-- 1st Feature -->
+                        <div>
+                            <svg class="mx-auto mb-2 w-8 h-8 sm:w-10 sm:h-10 text-[#FFCF23]" fill="currentColor" viewBox="0 0 24 24"><rect x="3" y="17" width="18" height="3" rx="1.5" fill="#FFCF23"/><rect x="7" y="7" width="2" height="7" rx="1" fill="#FFCF23"/><rect x="11" y="4" width="2" height="10" rx="1" fill="#FFCF23"/><rect x="15" y="10" width="2" height="4" rx="1" fill="#FFCF23"/></svg>
+                            <div class="uppercase text-[10px] sm:text-xs text-slate-400 tracking-widest mb-1">Scale from zero</div>
+                            <div class="text-sm sm:text-lg font-bold text-white">To 10k/Mo</div>
+                        </div>
+                        <!-- 2nd Feature -->
+                        <div>
+                            <svg class="mx-auto mb-2 w-8 h-8 sm:w-10 sm:h-10 text-[#FFCF23]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-13a1 1 0 100 2 1 1 0 000-2zm1 3h-2v6h2V7z"/></svg>
+                            <div class="uppercase text-[10px] sm:text-xs text-slate-400 tracking-widest mb-1">World Class</div>
+                            <div class="text-sm sm:text-lg font-bold text-white">Learning</div>
+                        </div>
+                        <!-- 3rd Feature -->
+                        <div>
+                            <svg class="mx-auto mb-2 w-8 h-8 sm:w-10 sm:h-10 text-[#FFCF23]" fill="currentColor" viewBox="0 0 24 24"><path d="M17.657 16.657a8 8 0 10-11.314 0M8 12l-2 2m0 0l2 2m-2-2h12m-2-2l2 2m0 0l-2 2" stroke="#FFCF23" stroke-width="2" fill="none"/><path d="M15 9h.01" fill="#FFCF23"/></svg>
+                            <div class="uppercase text-[10px] sm:text-xs tracking-widest mb-1" style="color:#FFCF23">1-on-1 Advice</div>
+                            <div class="text-sm sm:text-lg font-bold text-white">From Experts</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        <section class="py-16 px-4 sm:px-6 lg:px-8">
+            <div class="max-w-4xl mx-auto text-center">
+                <h1 class="text-white mb-8 text-4xl font-bold">Our Student Reviews</h1>
+            </div>
+            <div class="max-w-6xl mx-auto grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+                <div class="bg-[#111014] border border-white/10 rounded-2xl shadow-lg p-6">
+                    <div class="flex items-center gap-4 mb-4">
+                        <img src="{{ asset('images/Matt_V.avif') }}" alt="Matt V." class="w-16 h-16 rounded-full object-cover border-2 border-[#FFCF23]">
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <span class="text-white font-semibold text-lg">Matt_V</span>
+                                <span class="text-slate-300 text-sm">1 Review</span>
+                            </div>
+                            <div class="flex items-center gap-2 mt-1">
+                                <span class="text-slate-300 text-sm">Belgium</span>
+                                <img src="https://flagcdn.com/be.svg" alt="Belgium" class="w-5 h-4 rounded-sm border border-white/20">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-1 mb-4">
+                        <svg class="w-5 h-5 text-[#FFCF23]" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.967a1 1 0 00.95.69h4.178c.969 0 1.371 1.24.588 1.81l-3.385 2.46a1 1 0 00-.364 1.118l1.287 3.966c.3.922-.755 1.688-1.54 1.118l-3.385-2.46a1 1 0 00-1.175 0l-3.385 2.46c-.784.57-1.838-.196-1.54-1.118l1.287-3.966a1 1 0 00-.364-1.118l-3.385-2.46c-.783-.57-.38-1.81.588-1.81h4.178a1 1 0 00.95-.69l1.286-3.967z"/></svg>
+                        <svg class="w-5 h-5 text-[#FFCF23]" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.967a1 1 0 00.95.69h4.178c.969 0 1.371 1.24.588 1.81l-3.385 2.46a1 1 0 00-.364 1.118l1.287 3.966c.3.922-.755 1.688-1.54 1.118l-3.385-2.46a1 1 0 00-1.175 0l-3.385 2.46c-.784.57-1.838-.196-1.54-1.118l1.287-3.966a1 1 0 00-.364-1.118l-3.385-2.46c-.783-.57-.38-1.81.588-1.81h4.178a1 1 0 00.95-.69l1.286-3.967z"/></svg>
+                        <svg class="w-5 h-5 text-[#FFCF23]" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.967a1 1 0 00.95.69h4.178c.969 0 1.371 1.24.588 1.81l-3.385 2.46a1 1 0 00-.364 1.118l1.287 3.966c.3.922-.755 1.688-1.54 1.118l-3.385-2.46a1 1 0 00-1.175 0l-3.385 2.46c-.784.57-1.838-.196-1.54-1.118l1.287-3.966a1 1 0 00-.364-1.118l-3.385-2.46c-.783-.57-.38-1.81.588-1.81h4.178a1 1 0 00.95-.69l1.286-3.967z"/></svg>
+                        <svg class="w-5 h-5 text-[#FFCF23]" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.967a1 1 0 00.95.69h4.178c.969 0 1.371 1.24.588 1.81l-3.385 2.46a1 1 0 00-.364 1.118l1.287 3.966c.3.922-.755 1.688-1.54 1.118l-3.385-2.46a1 1 0 00-1.175 0l-3.385 2.46c-.784.57-1.838-.196-1.54-1.118l1.287-3.966a1 1 0 00-.364-1.118l-3.385-2.46c-.783-.57-.38-1.81.588-1.81h4.178a1 1 0 00.95-.69l1.286-3.967z"/></svg>
+                        <svg class="w-5 h-5 text-[#FFCF23]" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.967a1 1 0 00.95.69h4.178c.969 0 1.371 1.24.588 1.81l-3.385 2.46a1 1 0 00-.364 1.118l1.287 3.966c.3.922-.755 1.688-1.54 1.118l-3.385-2.46a1 1 0 00-1.175 0l-3.385 2.46c-.784.57-1.838-.196-1.54-1.118l1.287-3.966a1 1 0 00-.364-1.118l-3.385-2.46c-.783-.57-.38-1.81.588-1.81h4.178a1 1 0 00.95-.69l1.286-3.967z"/></svg>
+                    </div>
+                    <div class="border-t border-white/10 pt-4 mb-2">
+                        <div class="font-semibold text-white mb-1">NEW ME SINCE JOINING</div>
+                        <div class="text-slate-300 text-base mb-2">Since I've joined I'm a new man, been a new man since 669 days. JOIN, BECOME THE BEST IN YOUR FIELD. BE DIFFERENT.</div>
+                    </div>
+                    <div class="text-xs text-slate-400">May 24, 2026</div>
+                </div>
+
+                <div class="bg-[#111014] border border-white/10 rounded-2xl shadow-lg p-6">
+                    <div class="flex items-center gap-4 mb-4">
+                        <img src="{{ asset('images/ammorsy3.avif') }}" alt="Ammorsy" class="w-16 h-16 rounded-full object-cover border-2 border-[#FFCF23]">
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <span class="text-white font-semibold text-lg">Ammorsy</span>
+                                <span class="text-slate-300 text-sm">Verified Student</span>
+                            </div>
+                            <div class="flex items-center gap-2 mt-1">
+                                <span class="text-slate-300 text-sm">Student Review</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-1 mb-4">
+                        <svg class="w-5 h-5 text-[#FFCF23]" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.967a1 1 0 00.95.69h4.178c.969 0 1.371 1.24.588 1.81l-3.385 2.46a1 1 0 00-.364 1.118l1.287 3.966c.3.922-.755 1.688-1.54 1.118l-3.385-2.46a1 1 0 00-1.175 0l-3.385 2.46c-.784.57-1.838-.196-1.54-1.118l1.287-3.966a1 1 0 00-.364-1.118l-3.385-2.46c-.783-.57-.38-1.81.588-1.81h4.178a1 1 0 00.95-.69l1.286-3.967z"/></svg>
+                        <svg class="w-5 h-5 text-[#FFCF23]" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.967a1 1 0 00.95.69h4.178c.969 0 1.371 1.24.588 1.81l-3.385 2.46a1 1 0 00-.364 1.118l1.287 3.966c.3.922-.755 1.688-1.54 1.118l-3.385-2.46a1 1 0 00-1.175 0l-3.385 2.46c-.784.57-1.838-.196-1.54-1.118l1.287-3.966a1 1 0 00-.364-1.118l-3.385-2.46c-.783-.57-.38-1.81.588-1.81h4.178a1 1 0 00.95-.69l1.286-3.967z"/></svg>
+                        <svg class="w-5 h-5 text-[#FFCF23]" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.967a1 1 0 00.95.69h4.178c.969 0 1.371 1.24.588 1.81l-3.385 2.46a1 1 0 00-.364 1.118l1.287 3.966c.3.922-.755 1.688-1.54 1.118l-3.385-2.46a1 1 0 00-1.175 0l-3.385 2.46c-.784.57-1.838-.196-1.54-1.118l1.287-3.966a1 1 0 00-.364-1.118l-3.385-2.46c-.783-.57-.38-1.81.588-1.81h4.178a1 1 0 00.95-.69l1.286-3.967z"/></svg>
+                        <svg class="w-5 h-5 text-[#FFCF23]" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.967a1 1 0 00.95.69h4.178c.969 0 1.371 1.24.588 1.81l-3.385 2.46a1 1 0 00-.364 1.118l1.287 3.966c.3.922-.755 1.688-1.54 1.118l-3.385-2.46a1 1 0 00-1.175 0l-3.385 2.46c-.784.57-1.838-.196-1.54-1.118l1.287-3.966a1 1 0 00-.364-1.118l-3.385-2.46c-.783-.57-.38-1.81.588-1.81h4.178a1 1 0 00.95-.69l1.286-3.967z"/></svg>
+                        <svg class="w-5 h-5 text-[#FFCF23]" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.967a1 1 0 00.95.69h4.178c.969 0 1.371 1.24.588 1.81l-3.385 2.46a1 1 0 00-.364 1.118l1.287 3.966c.3.922-.755 1.688-1.54 1.118l-3.385-2.46a1 1 0 00-1.175 0l-3.385 2.46c-.784.57-1.838-.196-1.54-1.118l1.287-3.966a1 1 0 00-.364-1.118l-3.385-2.46c-.783-.57-.38-1.81.588-1.81h4.178a1 1 0 00.95-.69l1.286-3.967z"/></svg>
+                    </div>
+                    <div class="border-t border-white/10 pt-4 mb-2">
+                        <div class="font-semibold text-white mb-1">REAL RESULTS, REAL COMMUNITY</div>
+                        <div class="text-slate-300 text-base mb-2">The lessons and community made it easier to stay consistent and turn my ideas into action every single week.</div>
+                    </div>
+                    <div class="text-xs text-slate-400">May 19, 2026</div>
+                </div>
+
+                <div class="bg-[#111014] border border-white/10 rounded-2xl shadow-lg p-6">
+                    <div class="flex items-center gap-4 mb-4">
+                        <img src="{{ asset('images/The Hun.avif') }}" alt="The Hun" class="w-16 h-16 rounded-full object-cover border-2 border-[#FFCF23]">
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <span class="text-white font-semibold text-lg">The Hun</span>
+                                <span class="text-slate-300 text-sm">Student</span>
+                            </div>
+                            <div class="flex items-center gap-2 mt-1">
+                                <span class="text-slate-300 text-sm">Community Review</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-1 mb-4">
+                        <svg class="w-5 h-5 text-[#FFCF23]" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.967a1 1 0 00.95.69h4.178c.969 0 1.371 1.24.588 1.81l-3.385 2.46a1 1 0 00-.364 1.118l1.287 3.966c.3.922-.755 1.688-1.54 1.118l-3.385-2.46a1 1 0 00-1.175 0l-3.385 2.46c-.784.57-1.838-.196-1.54-1.118l1.287-3.966a1 1 0 00-.364-1.118l-3.385-2.46c-.783-.57-.38-1.81.588-1.81h4.178a1 1 0 00.95-.69l1.286-3.967z"/></svg>
+                        <svg class="w-5 h-5 text-[#FFCF23]" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.967a1 1 0 00.95.69h4.178c.969 0 1.371 1.24.588 1.81l-3.385 2.46a1 1 0 00-.364 1.118l1.287 3.966c.3.922-.755 1.688-1.54 1.118l-3.385-2.46a1 1 0 00-1.175 0l-3.385 2.46c-.784.57-1.838-.196-1.54-1.118l1.287-3.966a1 1 0 00-.364-1.118l-3.385-2.46c-.783-.57-.38-1.81.588-1.81h4.178a1 1 0 00.95-.69l1.286-3.967z"/></svg>
+                        <svg class="w-5 h-5 text-[#FFCF23]" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.967a1 1 0 00.95.69h4.178c.969 0 1.371 1.24.588 1.81l-3.385 2.46a1 1 0 00-.364 1.118l1.287 3.966c.3.922-.755 1.688-1.54 1.118l-3.385-2.46a1 1 0 00-1.175 0l-3.385 2.46c-.784.57-1.838-.196-1.54-1.118l1.287-3.966a1 1 0 00-.364-1.118l-3.385-2.46c-.783-.57-.38-1.81.588-1.81h4.178a1 1 0 00.95-.69l1.286-3.967z"/></svg>
+                        <svg class="w-5 h-5 text-[#FFCF23]" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.967a1 1 0 00.95.69h4.178c.969 0 1.371 1.24.588 1.81l-3.385 2.46a1 1 0 00-.364 1.118l1.287 3.966c.3.922-.755 1.688-1.54 1.118l-3.385-2.46a1 1 0 00-1.175 0l-3.385 2.46c-.784.57-1.838-.196-1.54-1.118l1.287-3.966a1 1 0 00-.364-1.118l-3.385-2.46c-.783-.57-.38-1.81.588-1.81h4.178a1 1 0 00.95-.69l1.286-3.967z"/></svg>
+                        <svg class="w-5 h-5 text-[#FFCF23]" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.967a1 1 0 00.95.69h4.178c.969 0 1.371 1.24.588 1.81l-3.385 2.46a1 1 0 00-.364 1.118l1.287 3.966c.3.922-.755 1.688-1.54 1.118l-3.385-2.46a1 1 0 00-1.175 0l-3.385 2.46c-.784.57-1.838-.196-1.54-1.118l1.287-3.966a1 1 0 00-.364-1.118l-3.385-2.46c-.783-.57-.38-1.81.588-1.81h4.178a1 1 0 00.95-.69l1.286-3.967z"/></svg>
+                    </div>
+                    <div class="border-t border-white/10 pt-4 mb-2">
+                        <div class="font-semibold text-white mb-1">BEST DECISION I MADE</div>
+                        <div class="text-slate-300 text-base mb-2">I used to feel stuck. After joining, I finally had structure, mentors, and the confidence to take action.</div>
+                    </div>
+                    <div class="text-xs text-slate-400">May 16, 2026</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-16 px-4 sm:px-6 lg:px-8">
+            <div class="max-w-4xl mx-auto text-center">
+                <p class="text-white mb-4">The Real World Wins</p>
+                <h1 class="text-white text-4xl font-bold mb-4">Our Students Are Winning</h1>
+                <img src="{{asset('images/win1.png')}}" alt="winners1">
+                <img src="{{asset('images/win2.png')}}" alt="winners2">
+                <img src="{{asset('images/win3.png')}}" alt="winners3">
+                <img src="{{asset('images/win4.png')}}" alt="winners4">
+                <img src="{{asset('images/win5.png')}}" alt="winners5">
+                <img src="{{asset('images/win6.png')}}" alt="winners6">
+                <img src="{{asset('images/win7.png')}}" alt="winners7">
+                <img src="{{asset('images/win8.png')}}" alt="winners8">
+                <img src="{{asset('images/win9.png')}}" alt="winners9">
+                <img src="{{asset('images/win10.png')}}" alt="winners10">
+                <img src="{{asset('images/win11.png')}}" alt="winners11">
+                <img src="{{asset('images/win12.png')}}" alt="winners12">
+                <img src="{{asset('images/win13.png')}}" alt="winners13">
+                <img src="{{asset('images/win14.png')}}" alt="winners14">
+                <img src="{{asset('images/win15.png')}}" alt="winners15">
+                <img src="{{asset('images/win16.png')}}" alt="winners16">
+                <img src="{{asset('images/win17.png')}}" alt="winners17">
+            </div>
+
+            </div>
+        </section>
+
+        
+
         <!-- Plans Section -->
         <section class="py-16 px-4 sm:px-6 lg:px-8">
             <div class="max-w-4xl mx-auto text-center">
@@ -222,7 +380,7 @@
                         </div>
                         <div class="w-12 h-12 mx-auto mb-4 rounded-full bg-gradient-to-r from-[#FFCF23]/20 to-[#FF8D3A]/20 flex items-center justify-center">
                             <svg class="w-6 h-6 text-[#FFCF23]" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
                             </svg>
                         </div>
                         <h3 class="text-lg font-bold mb-2">Earn</h3>
@@ -323,6 +481,7 @@
                 <h2 class="text-3xl font-bold mb-6">Earn Your Signed Diploma</h2>
                 <p class="text-xl text-slate-300 mb-8 max-w-3xl mx-auto">
                     Only when you combine hard work with a world-class toolset, will you have the chance to achieve the freedom you've always dreamt of.
+                    <br><br>
                     When you do, a certificate of graduation awaits you.
                 </p>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
@@ -337,7 +496,7 @@
                     <div class="text-center">
                         <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-r from-[#FF8D3A]/20 to-[#FFCF23]/20 flex items-center justify-center">
                             <svg class="w-8 h-8 text-[#FF8D3A]" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M16 4c0-1.11.89-2 2-2s2 .89 2 2-.89 2-2 2-2-.89-2-2zm4 18v-6h2.5l-2.54-7.63A2.01 2.01 0 0017.94 6H16v2h1.89l.76 2.27L12 15.21l-6.65-4.94L6.11 8H8V6H5.05c-.83 0-1.55.52-1.85 1.29L.5 16H3v6c0 1.11.89 2 2 2h4c1.11 0 2-.89 2-2v-2h4v2c0 1.11.89 2 2 2h4c1.11 0 2-.89 2-2z"/>
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
                             </svg>
                         </div>
                         <h3 class="text-lg font-bold mb-2">Join A Network of Like-Minded Students</h3>
@@ -345,7 +504,7 @@
                     <div class="text-center">
                         <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-r from-[#FFCF23]/20 to-[#FF8D3A]/20 flex items-center justify-center">
                             <svg class="w-8 h-8 text-[#FFCF23]" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
                             </svg>
                         </div>
                         <h3 class="text-lg font-bold mb-2">Become A Master of Your Industry</h3>
@@ -376,7 +535,6 @@
                                 The world will change forever in 2026. They are developing more ways to trap you. What have you been doing to prepare? You must understand, it's now or never.
                             </p>
                         </div>
-                        <img src="https://via.placeholder.com/300x200/1a1a1a/ffffff?text=Time+Ticking" alt="Time's Ticking" class="w-full rounded-lg">
                     </div>
 
                     <!-- The Takeover -->
@@ -393,7 +551,6 @@
                                 Imagine there was a potion that you could apply to your business & it helped you 10x output OVERNIGHT. You can have a robot make money for you while you SLEEP... Yet you have chosen not to take action.
                             </p>
                         </div>
-                        <img src="https://via.placeholder.com/300x200/1a1a1a/ffffff?text=AI+Takeover" alt="AI Takeover" class="w-full rounded-lg">
                     </div>
 
                     <!-- The Way Out -->
@@ -405,12 +562,11 @@
                                 </svg>
                             </div>
                             <h3 class="text-xl font-bold mb-4 text-green-400">The Way Out</h3>
-                            <h4 class="text-lg font-semibold mb-4">You Need To Learn A New Skill</h4>
+                            <h4 class="text-lg font-semibold mb-4">You Need To Learn A New Skill</h3>
                             <p class="text-slate-300">
                                 Just imagine... The doors that open when you invest in yourself; higher income, greater freedom, and the ability to create the life you want. Don't wait for success to find you. Take control.
                             </p>
                         </div>
-                        <img src="https://via.placeholder.com/300x200/1a1a1a/ffffff?text=The+Way+Out" alt="The Way Out" class="w-full rounded-lg">
                     </div>
                 </div>
 
@@ -445,7 +601,6 @@
                         </a>
                     </div>
                     <div class="text-center">
-                        <img src="https://via.placeholder.com/400x500/1a1a1a/ffffff?text=Real+World+on+iPhone" alt="The Real World on iPhone" class="w-full max-w-sm mx-auto rounded-lg shadow-2xl">
                     </div>
                 </div>
             </div>
@@ -489,9 +644,7 @@
                     <br><br>
                     The Real World isn't just another platform. It's a new operating system for life. Inside, you'll learn real skills that make real money. You'll be mentored by proven entrepreneurs. You'll build cashflow, independence, and most importantly control.
                 </p>
-                <div class="relative">
-                    <img src="https://via.placeholder.com/600x400/1a1a1a/ffffff?text=Real+World+Platform" alt="The Real World Platform" class="w-full max-w-2xl mx-auto rounded-lg shadow-2xl">
-                </div>
+                
             </div>
         </section>
 
@@ -731,6 +884,24 @@
                                 </svg>
                                 <span class="text-slate-300">Learn with our hyper advanced application</span>
                             </div>
+                            <div class="flex items-center gap-3">
+                                <svg class="w-5 h-5 text-[#FFCF23] flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                                </svg>
+                                <span class="text-slate-300">Learn with our hyper advanced application</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <svg class="w-5 h-5 text-[#FFCF23] flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                                </svg>
+                                <span class="text-slate-300">Learn with our hyper advanced application</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <svg class="w-5 h-5 text-[#FFCF23] flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                                </svg>
+                                <span class="text-slate-300">Learn with our hyper advanced application</span>
+                            </div>
                         </div>
                     </div>
 
@@ -761,6 +932,24 @@
                                 </svg>
                                 <span class="text-slate-300">Network with 155,000+ students</span>
                             </div>
+                            <div class="flex items-center gap-3">
+                                <svg class="w-5 h-5 text-[#FF8D3A] flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                                </svg>
+                                <span class="text-slate-300">Scale from Zero to $10k/month as fast as possible</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <svg class="w-5 h-5 text-[#FF8D3A] flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                                </svg>
+                                <span class="text-slate-300">Network with 155,000+ students</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <svg class="w-5 h-5 text-[#FF8D3A] flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                                </svg>
+                                <span class="text-slate-300">Scale from Zero to $10k/month as fast as possible</span>
+                            </div>
                         </div>
                     </div>
 
@@ -784,6 +973,24 @@
                                     <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
                                 </svg>
                                 <span class="text-slate-300">Get mentored every step of your journey</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <svg class="w-5 h-5 text-[#FFCF23] flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                                </svg>
+                                <span class="text-slate-300">Network with 155,000+ students</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <svg class="w-5 h-5 text-[#FFCF23] flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                                </svg>
+                                <span class="text-slate-300">Network with 155,000+ students</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <svg class="w-5 h-5 text-[#FFCF23] flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                                </svg>
+                                <span class="text-slate-300">Network with 155,000+ students</span>
                             </div>
                             <div class="flex items-center gap-3">
                                 <svg class="w-5 h-5 text-[#FFCF23] flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
@@ -871,73 +1078,23 @@
                     </div>
 
                     <!-- Take Action -->
-                    <div class="rounded-lg border-2 border-[#FFCF23] bg-gradient-to-br from-[#FFCF23]/10 to-[#FF8D3A]/10 backdrop-blur p-8">
-                        <div class="flex items-center justify-center mb-6">
-                            <div class="w-16 h-16 rounded-full bg-gradient-to-r from-[#FFCF23] to-[#FF8D3A] flex items-center justify-center">
-                                <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M13 7h-2v4H7v2h4v4h2v-4h4v-2h-4V7zm-1-5C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/>
-                                </svg>
-                            </div>
-                            <h3 class="text-2xl font-bold text-[#FFCF23] ml-4">Take Action</h3>
+                    <div class="rounded-lg border-2 border-[#FFCF23] bg-gradient-to-br from-[#FFCF23]/10 to-[#FF8D3A]/10 backdrop-blur p-8 relative">
+                        <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-[#FFCF23] to-[#FF8D3A] text-[#08070D] px-4 py-1 rounded-full text-sm font-bold">
+                            RECOMMENDED
                         </div>
-                        <p class="text-slate-200 mb-6">Start Earning Today</p>
-                        <div class="text-4xl font-bold text-[#FFCF23] mb-4">$99</div>
-                        <div class="space-y-3">
-                            <div class="flex items-center gap-3">
-                                <svg class="w-5 h-5 text-[#FFCF23] flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                                </svg>
-                                <span class="text-slate-200">Simple-step-by-step tutorials</span>
-                            </div>
-                            <div class="flex items-center gap-3">
-                                <svg class="w-5 h-5 text-[#FFCF23] flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                                </svg>
-                                <span class="text-slate-200">10+ wealth creation methods</span>
-                            </div>
-                            <div class="flex items-center gap-3">
-                                <svg class="w-5 h-5 text-[#FFCF23] flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                                </svg>
-                                <span class="text-slate-200">Access to millionaire mentors</span>
-                            </div>
-                            <div class="flex items-center gap-3">
-                                <svg class="w-5 h-5 text-[#FFCF23] flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                                </svg>
-                                <span class="text-slate-200">Connect with 155,000+ others</span>
-                            </div>
-                            <div class="flex items-center gap-3">
-                                <svg class="w-5 h-5 text-[#FFCF23] flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                                </svg>
-                                <span class="text-slate-200">No experience needed</span>
-                            </div>
-                            <div class="flex items-center gap-3">
-                                <svg class="w-5 h-5 text-[#FFCF23] flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                                </svg>
-                                <span class="text-slate-200">Custom-made learning app</span>
-                            </div>
-                            <div class="flex items-center gap-3">
-                                <svg class="w-5 h-5 text-[#FFCF23] flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                                </svg>
-                                <span class="text-slate-200">Cancel anytime, risk-free</span>
-                            </div>
-                            <div class="flex items-center gap-3">
-                                <svg class="w-5 h-5 text-[#FFCF23] flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                                </svg>
-                                <span class="text-slate-200">$99/month forever</span>
-                            </div>
-                        </div>
-                        <div class="mt-4 mb-6">
-                            <span class="text-sm text-[#FFCF23] font-semibold">Lock in your price before it increases</span>
-                        </div>
-                        <a href="{{ route('login') }}" class="inline-block w-full px-6 py-3 bg-gradient-to-r from-[#FFCF23] to-[#FF8D3A] text-[#08070D] rounded-full font-bold hover:shadow-lg transition">
+                        <h3 class="text-2xl font-bold mb-2">Pay</h3>
+                        <div class="text-5xl font-bold text-[#FFCF23] mb-4">$99</div>
+                        <p class="text-slate-300 mb-8">Immediately tap into a reservoir of cutting-edge knowledge, positioning yourself at the vanguard of innovation and fast-tracking your path to wealth.</p>
+                        <a href="{{ route('login') }}" class="inline-block w-full px-6 py-3 bg-gradient-to-r from-[#FFCF23] to-[#FF8D3A] text-[#08070D] rounded-full font-bold mb-6 hover:shadow-lg hover:shadow-[#FFCF23]/20 transition transform hover:scale-105">
                             Join The Real World
                         </a>
+                        <div class="space-y-3 text-left">
+                            <p class="text-slate-200 text-sm font-semibold">✅ Access to 12+ courses</p>
+                            <p class="text-slate-200 text-sm font-semibold">✅ Daily mentorship sessions</p>
+                            <p class="text-slate-200 text-sm font-semibold">✅ 155K+ community members</p>
+                            <p class="text-slate-200 text-sm font-semibold">✅ Lifetime updates</p>
+                            <p class="text-slate-200 text-sm font-semibold">✅ Cancel anytime</p>
+                        </div>
                     </div>
                 </div>
             </div>
