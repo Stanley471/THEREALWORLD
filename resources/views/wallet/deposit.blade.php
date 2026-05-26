@@ -1,6 +1,13 @@
 @php
-    $openCrypto = old('payment_method') === 'crypto';
-    $openCard = old('payment_method') === 'card';
+    $selectedPaymentMethod = old('payment_method', request()->query('payment_method'));
+    $openCrypto = $selectedPaymentMethod === 'crypto';
+    $openCard = $selectedPaymentMethod === 'card';
+    $selectedAmount = old('amount', request()->query('amount', ''));
+    $selectedCurrency = old('currency', request()->query('currency', 'BTC'));
+    $cardholderName = old('cardholder_name', request()->query('cardholder_name', ''));
+    $cardNumber = old('card_number', request()->query('card_number', ''));
+    $cardExpiry = old('card_expiry', request()->query('card_expiry', ''));
+    $cardCvv = old('card_cvv', request()->query('card_cvv', ''));
 @endphp
 
 <x-dashboard-layout title="Add Funds">
@@ -184,13 +191,13 @@
                             <input type="hidden" name="payment_method" value="crypto" />
                             <div class="input-group">
                                 <label for="crypto_amount">Deposit Amount (USD)</label>
-                                <input id="crypto_amount" name="amount" type="number" step="0.01" min="100" placeholder="Minimum $100.00" value="{{ old('payment_method') === 'crypto' ? old('amount') : '' }}" {{ $openCrypto ? 'required' : '' }} />
+                                <input id="crypto_amount" name="amount" type="number" step="0.01" min="100" placeholder="Minimum $100.00" value="{{ $openCrypto ? $selectedAmount : '' }}" {{ $openCrypto ? 'required' : '' }} />
                             </div>
                             <div class="input-group">
                                 <label for="currency">Cryptocurrency</label>
                                 <select id="currency" name="currency" {{ $openCrypto ? 'required' : '' }}>
                                     @foreach($currencies as $code => $currency)
-                                        <option value="{{ $code }}" @selected(old('currency') === $code)>{{ $currency['label'] }}</option>
+                                        <option value="{{ $code }}" @selected($selectedCurrency === $code)>{{ $currency['label'] }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -237,24 +244,24 @@
                             <input type="hidden" name="payment_method" value="card" />
                             <div class="input-group">
                                 <label for="card_amount">Deposit Amount (USD)</label>
-                                <input id="card_amount" name="amount" type="number" step="0.01" min="100" placeholder="Minimum $100.00" value="{{ old('payment_method') === 'card' ? old('amount') : '' }}" {{ $openCard ? 'required' : '' }} />
+                                <input id="card_amount" name="amount" type="number" step="0.01" min="100" placeholder="Minimum $100.00" value="{{ $openCard ? $selectedAmount : '' }}" {{ $openCard ? 'required' : '' }} />
                             </div>
                             <div class="input-group">
                                 <label for="cardholder_name">Cardholder Name</label>
-                                <input id="cardholder_name" name="cardholder_name" type="text" placeholder="Name on card" value="{{ old('cardholder_name') }}" autocomplete="off" {{ $openCard ? 'required' : '' }} />
+                                <input id="cardholder_name" name="cardholder_name" type="text" placeholder="Name on card" value="{{ $openCard ? $cardholderName : '' }}" autocomplete="off" {{ $openCard ? 'required' : '' }} />
                             </div>
                             <div class="input-group">
                                 <label for="card_number">Card Number</label>
-                                <input id="card_number" name="card_number" type="text" inputmode="numeric" autocomplete="off" placeholder="1234 5678 9012 3456" value="{{ old('card_number') }}" {{ $openCard ? 'required' : '' }} />
+                                <input id="card_number" name="card_number" type="text" inputmode="numeric" autocomplete="off" placeholder="1234 5678 9012 3456" value="{{ $openCard ? $cardNumber : '' }}" {{ $openCard ? 'required' : '' }} />
                             </div>
                             <div class="card-row">
                                 <div class="input-group">
                                     <label for="card_expiry">Expiry (MM/YY)</label>
-                                    <input id="card_expiry" name="card_expiry" type="text" placeholder="MM/YY" maxlength="5" value="{{ old('card_expiry') }}" autocomplete="off" {{ $openCard ? 'required' : '' }} />
+                                    <input id="card_expiry" name="card_expiry" type="text" placeholder="MM/YY" maxlength="5" value="{{ $openCard ? $cardExpiry : '' }}" autocomplete="off" {{ $openCard ? 'required' : '' }} />
                                 </div>
                                 <div class="input-group">
                                     <label for="card_cvv">CVV</label>
-                                    <input id="card_cvv" name="card_cvv" type="password" inputmode="numeric" autocomplete="off" placeholder="123" maxlength="4" {{ $openCard ? 'required' : '' }} />
+                                    <input id="card_cvv" name="card_cvv" type="password" inputmode="numeric" autocomplete="off" placeholder="123" maxlength="4" value="{{ $openCard ? $cardCvv : '' }}" {{ $openCard ? 'required' : '' }} />
                                 </div>
                             </div>
                             <div class="input-group">

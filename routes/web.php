@@ -6,7 +6,9 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\WalletController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\CoursesController;
 use App\Http\Middleware\AdminMiddleware;
+use App\Http\Middleware\EnsureSubscribed;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -33,7 +35,9 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/community', function () {
         return view('community');
-    })->name('community');
+    })->middleware(EnsureSubscribed::class)->name('community');
+
+    Route::get('/courses', [CoursesController::class, 'index'])->middleware(EnsureSubscribed::class)->name('courses.index');
 
     Route::prefix('settings')->name('settings.')->group(function () {
         Route::get('/', [SettingsController::class, 'index'])->name('index');

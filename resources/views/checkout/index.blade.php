@@ -111,6 +111,11 @@
                 display: flex;
                 justify-content: flex-start;
                 background: linear-gradient(180deg, #1E2E3C 0%, #0E1923 100%);
+                cursor: pointer;
+                transition: all 0.25s ease;
+            }
+            .toggle-switch.yearly {
+                justify-content: flex-end;
             }
             
             .toggle-switch-circle {
@@ -119,6 +124,12 @@
                 border-radius: 50%;
                 background: linear-gradient(109.78deg, #FFFFFF -13.37%, #FFCF23 38.96%, #FF8D3A 138.03%);
                 border: 1px solid rgba(88, 99, 109, 0.41);
+                transition: transform 0.25s ease;
+            }
+            .plan-button {
+                width: 100%; border-radius: 0.85rem; padding: 1rem 1.25rem; font-weight: 700;
+                border: none; cursor: pointer; transition: transform 0.2s ease;
+                text-decoration: none;
             }
             
             .plans-grid {
@@ -374,12 +385,12 @@
             <!-- Plans Grid -->
             <div class="plans-grid">
                 <!-- Conquer Plan -->
-                <div class="plan-card conquer">
+                <div class="plan-card conquer" data-plan="conquer" data-monthly="99" data-yearly="988">
                     <div class="plan-header">
                         <div class="plan-name">Conquer</div>
                         <div>
                             <div class="plan-price">
-                                <span class="plan-price-currency">$</span>99<span class="plan-price-period">/month</span>
+                                <span class="plan-price-currency">$</span><span class="plan-price-value">99</span><span class="plan-price-period">/month</span>
                             </div>
                         </div>
                     </div>
@@ -417,23 +428,31 @@
                         </div>
                     </div>
 
-                    <button class="plan-button conquer">
-                        <svg class="button-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <rect width="20" height="14" x="2" y="5" rx="2"></rect>
-                            <line x1="2" x2="22" y1="10" y2="10"></line>
-                        </svg>
-                        Join with Card
-                    </button>
+                    <div style="display:flex;flex-direction:column;gap:0.75rem;">
+                        <a href="{{ route('wallet.deposit', ['payment_method' => 'card', 'plan' => 'conquer', 'billing' => 'monthly']) }}" class="plan-button conquer payment-link" data-method="card" data-plan="conquer">
+                            <svg class="button-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect width="20" height="14" x="2" y="5" rx="2"></rect>
+                                <line x1="2" x2="22" y1="10" y2="10"></line>
+                            </svg>
+                            Join with Card
+                        </a>
+                        <a href="{{ route('wallet.deposit', ['payment_method' => 'crypto', 'plan' => 'conquer', 'billing' => 'monthly']) }}" class="plan-button crypto payment-link" data-method="crypto" data-plan="conquer" style="justify-content:center;">
+                            <svg class="button-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 3l1.5 5H20l-4.5 3.25L16 17l-4 2.75L8 17l1.5-5L5 8h6.5L12 3z" />
+                            </svg>
+                            Join with Crypto
+                        </a>
+                    </div>
                 </div>
 
                 <!-- Vanguard Plan -->
-                <div class="plan-card vanguard">
+                <div class="plan-card vanguard" data-plan="vanguard" data-monthly="499" data-yearly="4970">
                     <div class="sold-out-banner">SOLD OUT</div>
                     <div class="plan-header">
                         <div class="plan-name">Vanguard</div>
                         <div>
                             <div class="plan-price">
-                                <span class="plan-price-currency">$</span>499<span class="plan-price-period">/month</span>
+                                <span class="plan-price-currency">$</span><span class="plan-price-value">499</span><span class="plan-price-period">/month</span>
                             </div>
                         </div>
                     </div>
@@ -468,5 +487,44 @@
             <div class="footer-text">*All Prices Are Presented In USD.</div>
         </div>
     </main>
+    <script>
+        (function () {
+            const toggle = document.querySelector('.toggle-switch');
+            const periodText = document.querySelector('.plan-price-period');
+            const planCards = document.querySelectorAll('.plan-card');
+            const paymentLinks = document.querySelectorAll('.payment-link');
+            let billing = 'monthly';
+
+            const planData = {
+                conquer: { monthly: { price: '99', period: '/month' }, yearly: { price: '988', period: '/year' } },
+                vanguard: { monthly: { price: '499', period: '/month' }, yearly: { price: '4970', period: '/year' } },
+            };
+
+            function updateBilling(newBilling) {
+                billing = newBilling;
+                toggle.classList.toggle('yearly', billing === 'yearly');
+
+                planCards.forEach(card => {
+                    const plan = card.dataset.plan;
+                    const data = planData[plan]?.[billing];
+                    if (!data) return;
+                    card.querySelector('.plan-price-value').textContent = data.price;
+                    card.querySelector('.plan-price-period').textContent = data.period;
+                });
+
+                paymentLinks.forEach(link => {
+                    const url = new URL(link.href, window.location.origin);
+                    url.searchParams.set('billing', billing);
+                    link.href = url.toString();
+                });
+            }
+
+            toggle.addEventListener('click', function () {
+                updateBilling(billing === 'monthly' ? 'yearly' : 'monthly');
+            });
+
+            updateBilling('monthly');
+        })();
+    </script>
 </body>
 </html>

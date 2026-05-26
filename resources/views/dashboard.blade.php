@@ -384,18 +384,7 @@
       </div>
     </div>
 
-    <div class="course-item">
-      <div class="course-thumb" style="background:rgba(129,140,248,.10);">
-        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l6 6 4-4 6 6"/></svg>
-      </div>
-      <div class="course-info">
-        <div class="course-name">Net Balance Flow</div>
-        <div class="course-prog" style="height:auto;">
-          <div class="course-prog-bar" style="width:100%;background:rgba(129,140,248,.6);height:8px;border-radius:999px;"></div>
-        </div>
-        <div class="course-pct">${{ number_format($netFlow, 2) }}</div>
-      </div>
-    </div>
+    
 
     <div class="course-item">
       <div class="course-thumb" style="background:rgba(255,141,58,.10);">
