@@ -4,6 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Join The Real World App | Sign Up Today</title>
+        <link rel="icon" type="image/webp" href="{{ asset('images/logo.webp') }}" />
         <meta name="description" content="Join 155,000+ members learning to build real income online. 12+ wealth creation methods taught by millionaire professors. Start for $99/month">
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />

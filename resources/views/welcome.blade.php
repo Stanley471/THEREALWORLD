@@ -4,6 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>The Real World | Join 155K+ Members Learning To Build Real Income</title>
+        <link rel="icon" type="image/webp" href="{{ asset('images/logo.webp') }}" />
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
         <style>
@@ -40,7 +41,7 @@
                             <li><a href="https://www.jointherealworld.com/articles" class="block text-base font-semibold text-white hover:text-[#FFCF23] transition">Articles</a></li>
                         </ul>
                         <div class="mt-6 pt-4">
-                            <a href="{{ route('login') }}" class="block w-full text-center rounded-full bg-white px-4 py-3 text-[#08070D] font-semibold hover:bg-slate-100 transition">Join The Real World</a>
+                            <a href="{{ route('register') }}" class="block w-full text-center rounded-full bg-white px-4 py-3 text-[#08070D] font-semibold hover:bg-slate-100 transition">Join The Real World</a>
                         </div>
                     </div>
 
@@ -58,14 +59,14 @@
                             <ul class="space-y-6 text-lg">
                                 <li><a href="/" class="block font-semibold text-white hover:text-[#FFCF23]">Homepage</a></li>
                                 <li><a href="#courses" class="block font-semibold text-white hover:text-[#FFCF23]">Courses</a></li>
-                                <li><a href="https://www.jointherealworld.com/newsletter" class="block font-semibold text-white hover:text-[#FFCF23]">Newsletter</a></li>
-                                <li><a href="https://www.jointherealworld.com/download" class="block font-semibold text-white hover:text-[#FFCF23]">Download App</a></li>
-                                <li><a href="https://www.jointherealworld.com/articles" class="block font-semibold text-white hover:text-[#FFCF23]">Articles</a></li>
+                                <li><a href="#" class="block font-semibold text-white hover:text-[#FFCF23]">Newsletter</a></li>
+                                <li><a href="#" class="block font-semibold text-white hover:text-[#FFCF23]">Download App</a></li>
+                                <li><a href="#" class="block font-semibold text-white hover:text-[#FFCF23]">Articles</a></li>
                             </ul>
                         </nav>
 
                         <div class="mt-auto">
-                            <a href="{{ route('login') }}" class="block w-full text-center rounded-full bg-white px-4 py-3 text-[#08070D] font-semibold hover:bg-slate-100 transition">Join The Real World</a>
+                            <a href="{{ route('register') }}" class="block w-full text-center rounded-full bg-white px-4 py-3 text-[#08070D] font-semibold hover:bg-slate-100 transition">Join The Real World</a>
                         </div>
                     </div>
                 </details>
@@ -128,7 +129,7 @@
 
                 <!-- CTA button -->
                 <div class="order-6 flex flex-col sm:flex-row gap-4 justify-center">
-                    <a href="{{ route('login') }}" class="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-[#ecc879] to-[#FF8D3A] text-[#08070D] rounded-full font-bold text-lg hover:shadow-lg hover:shadow-[#FFCF23]/20 transition transform hover:scale-105">
+                    <a href="{{ route('register') }}" class="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-[#ecc879] to-[#FF8D3A] text-[#08070D] rounded-full font-bold text-lg hover:shadow-lg hover:shadow-[#FFCF23]/20 transition transform hover:scale-105">
                         Join The Real World
                         <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
@@ -407,7 +408,7 @@
                             </svg>
                         </div>
                         <h3 class="text-lg font-bold mb-2 text-[#FFCF23]">Conquer</h3>
-                        <a href="{{ route('login') }}" class="inline-block mt-4 px-6 py-2 bg-gradient-to-r from-[#FFCF23] to-[#FF8D3A] text-[#08070D] rounded-full font-bold text-sm hover:shadow-lg transition">
+                        <a href="{{ route('register') }}" class="inline-block mt-4 px-6 py-2 bg-gradient-to-r from-[#FFCF23] to-[#FF8D3A] text-[#08070D] rounded-full font-bold text-sm hover:shadow-lg transition">
                             Join Now
                         </a>
                     </div>
@@ -571,7 +572,7 @@
                 </div>
 
                 <div class="text-center mt-12">
-                    <a href="{{ route('login') }}" class="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-[#FFCF23] to-[#FF8D3A] text-[#08070D] rounded-full font-bold text-lg hover:shadow-lg hover:shadow-[#FFCF23]/20 transition transform hover:scale-105">
+                    <a href="{{ route('register') }}" class="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-[#FFCF23] to-[#FF8D3A] text-[#08070D] rounded-full font-bold text-lg hover:shadow-lg hover:shadow-[#FFCF23]/20 transition transform hover:scale-105">
                         Join The Real World
                         <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
@@ -593,7 +594,7 @@
                             <br><br>
                             In The Real World you will get access to multimillionaire professors who will give you a step-by-step path to reach your goals as fast as humanly possible.
                         </p>
-                        <a href="{{ route('login') }}" class="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-[#FFCF23] to-[#FF8D3A] text-[#08070D] rounded-full font-bold text-lg hover:shadow-lg hover:shadow-[#FFCF23]/20 transition transform hover:scale-105">
+                        <a href="{{ route('register') }}" class="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-[#FFCF23] to-[#FF8D3A] text-[#08070D] rounded-full font-bold text-lg hover:shadow-lg hover:shadow-[#FFCF23]/20 transition transform hover:scale-105">
                             Join The Real World
                             <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
@@ -746,7 +747,7 @@
                                 <span class="text-slate-200">Updated daily based on latest information</span>
                             </div>
                         </div>
-                        <a href="{{ route('login') }}" class="inline-block mt-6 px-6 py-3 bg-gradient-to-r from-[#FFCF23] to-[#FF8D3A] text-[#08070D] rounded-full font-bold hover:shadow-lg transition">
+                        <a href="{{ route('register') }}" class="inline-block mt-6 px-6 py-3 bg-gradient-to-r from-[#FFCF23] to-[#FF8D3A] text-[#08070D] rounded-full font-bold hover:shadow-lg transition">
                             Join The Real World
                         </a>
                     </div>
@@ -799,39 +800,11 @@
             </div>
         </section>
 
-        <!-- Our Students Are Winning -->
-        <section class="py-20 px-4 sm:px-6 lg:px-8">
-            <div class="max-w-6xl mx-auto">
-                <h2 class="text-4xl font-bold text-center mb-12">
-                    Our Students Are <span class="text-[#FFCF23]">Winning</span>
-                </h2>
-
-                <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-12">
-                    @for ($i = 1; $i <= 12; $i++)
-                        <div class="aspect-square rounded-lg bg-gradient-to-br from-[#FFCF23]/20 to-[#FF8D3A]/20 border border-white/10 flex items-center justify-center">
-                            <img src="https://via.placeholder.com/100x100/FFCF23/08070D?text=Win{{ $i }}" alt="Student Success {{ $i }}" class="w-full h-full object-cover rounded-lg">
-                        </div>
-                    @endfor
-                </div>
-
-                <div class="text-center">
-                    <a href="{{ route('login') }}" class="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-[#FFCF23] to-[#FF8D3A] text-[#08070D] rounded-full font-bold text-lg hover:shadow-lg hover:shadow-[#FFCF23]/20 transition transform hover:scale-105">
-                        Join The Real World
-                        <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
-                        </svg>
-                    </a>
-                    <p class="text-slate-300 mt-4">155,000+ like-minded students</p>
-                </div>
-            </div>
-        </section>
+        
 
         <!-- Are You Prepared To Work Hard -->
         <section class="py-20 px-4 sm:px-6 lg:px-8">
             <div class="max-w-4xl mx-auto text-center">
-                <div class="mb-8">
-                    <img src="https://via.placeholder.com/400x300/1a1a1a/ffffff?text=Ask+Yourself" alt="Ask Yourself" class="w-full max-w-md mx-auto rounded-lg">
-                </div>
                 <h2 class="text-4xl font-bold mb-8">Are You Prepared To Work Hard?</h2>
                 <p class="text-xl text-slate-300 mb-8 max-w-3xl mx-auto">
                     Money-making is a skill. Like every other skill it can be learned, and the speed at which it is learned depends on the effort you put in, your coaches and the learning environment you are taught in.
@@ -840,7 +813,7 @@
                     <br><br>
                     There is no better place on the planet to learn how to make money online today.
                 </p>
-                <a href="{{ route('login') }}" class="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-[#FFCF23] to-[#FF8D3A] text-[#08070D] rounded-full font-bold text-lg hover:shadow-lg hover:shadow-[#FFCF23]/20 transition transform hover:scale-105">
+                <a href="{{ route('register') }}" class="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-[#FFCF23] to-[#FF8D3A] text-[#08070D] rounded-full font-bold text-lg hover:shadow-lg hover:shadow-[#FFCF23]/20 transition transform hover:scale-105">
                     Join The Real World
                     <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
@@ -1003,7 +976,7 @@
                 </div>
 
                 <div class="text-center mt-12">
-                    <a href="{{ route('login') }}" class="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-[#FFCF23] to-[#FF8D3A] text-[#08070D] rounded-full font-bold text-lg hover:shadow-lg hover:shadow-[#FFCF23]/20 transition transform hover:scale-105">
+                    <a href="{{ route('register') }}" class="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-[#FFCF23] to-[#FF8D3A] text-[#08070D] rounded-full font-bold text-lg hover:shadow-lg hover:shadow-[#FFCF23]/20 transition transform hover:scale-105">
                         Join The Real World
                         <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
@@ -1085,7 +1058,7 @@
                         <h3 class="text-2xl font-bold mb-2">Pay</h3>
                         <div class="text-5xl font-bold text-[#FFCF23] mb-4">$99</div>
                         <p class="text-slate-300 mb-8">Immediately tap into a reservoir of cutting-edge knowledge, positioning yourself at the vanguard of innovation and fast-tracking your path to wealth.</p>
-                        <a href="{{ route('login') }}" class="inline-block w-full px-6 py-3 bg-gradient-to-r from-[#FFCF23] to-[#FF8D3A] text-[#08070D] rounded-full font-bold mb-6 hover:shadow-lg hover:shadow-[#FFCF23]/20 transition transform hover:scale-105">
+                        <a href="{{ route('register') }}" class="inline-block w-full px-6 py-3 bg-gradient-to-r from-[#FFCF23] to-[#FF8D3A] text-[#08070D] rounded-full font-bold mb-6 hover:shadow-lg hover:shadow-[#FFCF23]/20 transition transform hover:scale-105">
                             Join The Real World
                         </a>
                         <div class="space-y-3 text-left">
@@ -1125,7 +1098,7 @@
                         <h3 class="text-2xl font-bold mb-2">Pay</h3>
                         <div class="text-5xl font-bold text-[#FFCF23] mb-4">$99</div>
                         <p class="text-slate-300 mb-8">Immediately tap into a reservoir of cutting-edge knowledge, positioning yourself at the vanguard of innovation and fast-tracking your path to wealth.</p>
-                        <a href="{{ route('login') }}" class="inline-block w-full px-6 py-3 bg-gradient-to-r from-[#FFCF23] to-[#FF8D3A] text-[#08070D] rounded-full font-bold mb-6 hover:shadow-lg hover:shadow-[#FFCF23]/20 transition transform hover:scale-105">
+                        <a href="{{ route('register') }}" class="inline-block w-full px-6 py-3 bg-gradient-to-r from-[#FFCF23] to-[#FF8D3A] text-[#08070D] rounded-full font-bold mb-6 hover:shadow-lg hover:shadow-[#FFCF23]/20 transition transform hover:scale-105">
                             Join The Real World
                         </a>
                         <div class="space-y-3 text-left">
@@ -1193,7 +1166,7 @@
             <div class="max-w-2xl mx-auto">
                 <h2 class="text-4xl font-bold mb-4">Ready to Transform Your Life?</h2>
                 <p class="text-xl text-slate-300 mb-8">Lock in your price now before it increases. Join 155K+ students on their wealth journey.</p>
-                <a href="{{ route('login') }}" class="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-[#FFCF23] to-[#FF8D3A] text-[#08070D] rounded-full font-bold text-lg hover:shadow-lg hover:shadow-[#FFCF23]/20 transition transform hover:scale-105">
+                <a href="{{ route('register') }}" class="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-[#FFCF23] to-[#FF8D3A] text-[#08070D] rounded-full font-bold text-lg hover:shadow-lg hover:shadow-[#FFCF23]/20 transition transform hover:scale-105">
                     Start Free Trial Today
                     <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
